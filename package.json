@@ -1,0 +1,25 @@
+{
+  "name": "website-v2",
+  "version": "1.0.0",
+  "description": "The second version of my website",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "pm2": "^6.0.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
