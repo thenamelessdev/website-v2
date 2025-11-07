@@ -14,8 +14,9 @@ app.set("view engine", "ejs");
 const port = process.env.port || 8080;
 
 //routes
-
-//main
+import projectsRouter from "./routes/projects.js";
+app.use("/projects", projectsRouter);
+//main things
 app.get("/", (req: Request, res: Response) => {
     res.render("index");
 });

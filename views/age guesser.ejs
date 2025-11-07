@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age guesser</title>
+</head>
+<body>
+    <h2>Age guesser</h2>
+    <a href="/projects"><button>Go back</button></a>
+    <hr>
+    <label for="age">Enter your age: </label>
+    <input type="number" id="age">
+    <br>
+    <button id="submit">Guess age</button>
+    <p id="result"></p>
+
+    <script>
+        const age = document.getElementById("age");
+        const result = document.getElementById("result");
+        const submit = document.getElementById("submit");
+
+        submit.addEventListener("click", () => {
+            if(!age.value) {
+                result.textContent = "Please enter your age. I cannot guess it without that";
+            }
+            else{
+                result.textContent = `Your age is ${age.value}`;
+            }
+        });
+    </script>
+</body>
+</html>
