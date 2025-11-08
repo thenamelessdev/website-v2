@@ -10,6 +10,12 @@ router.get("/:project", (req: Request, res: Response) => {
     if(project == "age"){
         res.render("age guesser");
     }
+    if(project == "calculator"){
+        res.render("projects/calc");
+    }
+    else {
+        res.render("404");
+    }
 });
 
 export default router;

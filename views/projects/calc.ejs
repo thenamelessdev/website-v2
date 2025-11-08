@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursed Calculator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h3>Welcome to the Cursed Calculator</h3>
+    <p>gl using it</p>
+    <a href="/projects"><button>Go back</button></a>
+    <hr>
+    <label for="inp1">1th number</label>
+    <input type="number" id="inp1">
+    <br>
+    <label for="inp2">2th number</label>
+    <input type="number" id="inp2">
+    <br>
+    
+    <p>Operator</p>
+    <label for="add">+</label>
+    <input type="radio" name="operator" id="add">
+
+    <label for="subtract">-</label>
+    <input type="radio" name="operator" id="subtract">
+
+    <label for="multiply">*</label>
+    <input type="radio" name="operator" id="multiply">
+
+    <p>idk how to divide</p>
+
+    <button id="submit">Calculate</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        const inp1 = document.getElementById("inp1");
+        const inp2 = document.getElementById("inp2");
+        const operator = document.getElementsByName("operator");
+        const submit = document.getElementById("submit");
+        const result = document.getElementById("result");
+
+        submit.addEventListener("click", () => {
+            const random = Math.floor(Math.random() * 100);
+            if (inp1.value == "" || inp2.value == ""){
+                result.textContent = "gimme numbers";
+            }
+            else{
+                result.textContent = "Loading..."
+                setTimeout(() => {
+                    if (inp1.value == 67 || inp2.value == 67) {
+                        result.textContent = "do that again and you are getting banned from a calculator";
+                    }
+                    else if(random > 50) {
+                        result.textContent = random;
+                    }
+                    else {
+                        result.textContent = "idk try again";
+                    }
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
