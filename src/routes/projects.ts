@@ -8,10 +8,13 @@ router.get("/:project", (req: Request, res: Response) => {
     const { project } = req.params;
 
     if(project == "age"){
-        res.render("age guesser");
+        res.render("projects/age guesser");
     }
-    if(project == "calculator"){
+    else if(project == "calculator"){
         res.render("projects/calc");
+    }
+    else if(project == "timer") {
+        res.render("projects/timer");
     }
     else {
         res.render("404");
