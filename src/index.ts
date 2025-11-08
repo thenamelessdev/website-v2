@@ -32,4 +32,6 @@ app.get("/style.css", (req: Request, res: Response) => {
     res.sendFile(rootdir + "/views/style.css");
 });
 
+//404 page
+
 server.listen({port, host: "0.0.0.0"});
