@@ -33,5 +33,8 @@ app.get("/style.css", (req: Request, res: Response) => {
 });
 
 //404 page
+app.use((req: Request, res: Response) => {
+    res.status(404).render("404");
+})
 
 server.listen({port, host: "0.0.0.0"});
