@@ -16,6 +16,9 @@ router.get("/:project", (req: Request, res: Response) => {
     else if(project == "timer") {
         res.render("projects/timer");
     }
+    else if(project == "cookie"){
+        res.render("projects/cookie");
+    }
     else {
         res.render("404");
     }

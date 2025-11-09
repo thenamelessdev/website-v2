@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie clicker</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Cookie Clicker</h1>
+    <p>More like button clicker</p>
+    <p>For a better cookie clicker check out <a href="https://github.com/thenamelessdev/cookie-clicker">this one</a></p>
+    <a href="/projects"><button>Go back</button></a>
+    <hr>
+    <button id="cookie">Click me</button>
+    <p id="clicks">Clicks: </p>
+    <script>
+        let clicks = 0;
+        const cookie = document.getElementById("cookie");
+        const clicksText = document.getElementById("clicks");
+        clicksText.textContent = "Clicks: 0";
+        cookie.addEventListener("click", () => {
+            clicks++;
+            clicksText.textContent = `Clicks: ${clicks}`;
+        });
+    </script>
+</body>
+</html>

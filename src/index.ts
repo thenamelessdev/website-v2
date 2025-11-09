@@ -21,6 +21,7 @@ const rootdir = path.join(__dirname, "..");
 //routes
 import projectsRouter from "./routes/projects.js";
 app.use("/projects", projectsRouter);
+
 //main things
 app.get("/", (req: Request, res: Response) => {
     res.render("index");
