@@ -2,6 +2,7 @@
 import express, { Request, Response } from "express";
 import session from "express-session";
 import dotenv from "dotenv";
+import MongoStore from "connect-mongo";
 import { fileURLToPath } from "url";
 import path from "path";
 import http from "http";
@@ -16,7 +17,11 @@ const port = process.env.port || 8080;
 app.use(session({
     secret: process.env.secret || "DO NOT USE ME",
     saveUninitialized: true,
-    resave: false
+    resave: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.connString,
+        collectionName: "session"
+    })
 }));
 
 //rootdir
