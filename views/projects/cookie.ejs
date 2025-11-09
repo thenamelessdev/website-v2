@@ -9,19 +9,22 @@
 <body>
     <h1>Cookie Clicker</h1>
     <p>More like button clicker</p>
-    <p>For a better cookie clicker check out <a href="https://github.com/thenamelessdev/cookie-clicker">this one</a></p>
+    <p>This isn't just a normal cliker. It's global</p>
     <a href="/projects"><button>Go back</button></a>
     <hr>
     <button id="cookie">Click me</button>
     <p id="clicks">Clicks: </p>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        let clicks = 0;
         const cookie = document.getElementById("cookie");
         const clicksText = document.getElementById("clicks");
-        clicksText.textContent = "Clicks: 0";
+        const socket = io();
+
         cookie.addEventListener("click", () => {
-            clicks++;
-            clicksText.textContent = `Clicks: ${clicks}`;
+            socket.emit("click");
+        });
+        socket.on("clicks", (data) => {
+            clicksText.textContent = `Clicks: ${data}`;
         });
     </script>
 </body>

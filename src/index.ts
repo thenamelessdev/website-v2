@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 import { fileURLToPath } from "url";
 import path from "path";
 import http from "http";
+import { Server } from "socket.io";
 
 //vars and conf
 dotenv.config();
@@ -23,6 +24,8 @@ app.use(session({
         collectionName: "session"
     })
 }));
+const io = new Server(server);
+let clicks = 0;
 
 //rootdir
 const __filename = fileURLToPath(import.meta.url);
@@ -48,5 +51,15 @@ app.get("/style.css", (req: Request, res: Response) => {
 app.use((req: Request, res: Response) => {
     res.status(404).render("404");
 })
+
+
+// websocket stuff
+io.on("connection", (socket) => {
+    socket.emit("clicks", clicks);
+    socket.on("click", () => {
+        clicks++;
+        io.emit("clicks", clicks);
+    });
+});
 
 server.listen({port, host: "0.0.0.0"});
