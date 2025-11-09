@@ -19,6 +19,18 @@ router.get("/:project", (req: Request, res: Response) => {
     else if(project == "cookie"){
         res.render("projects/cookie");
     }
+    else if(project == "refresher") {
+        if(req.session){
+            if(req.session.views) {
+                req.session.views++;
+                res.render("projects/refresher", { visits: req.session.views });
+            }
+            else{
+                req.session.views = 1;
+                res.render("projects/refresher", { visits: req.session.views });
+            }
+        }
+    }
     else {
         res.render("404");
     }

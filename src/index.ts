@@ -1,5 +1,6 @@
 //imports
 import express, { Request, Response } from "express";
+import session from "express-session";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -12,6 +13,11 @@ const server = http.createServer(app);
 app.use(express.json());
 app.set("view engine", "ejs");
 const port = process.env.port || 8080;
+app.use(session({
+    secret: process.env.secret || "DO NOT USE ME",
+    saveUninitialized: true,
+    resave: false
+}));
 
 //rootdir
 const __filename = fileURLToPath(import.meta.url);
