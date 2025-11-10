@@ -11,3 +11,27 @@ button{
 button:hover{
     background-color: rgb(156, 156, 156);
 }
+input[type="number"]{
+    border-width: 2px;
+    border-radius: 7px;
+    transition: all 0.3s ease;
+}
+input[type="number"]:hover{
+    box-shadow: 3px 3px black;
+}
+input[type="text"]{
+    border-width: 2px;
+    border-radius: 7px;
+    transition: all 0.3s ease;
+}
+input[type="text"]:hover{
+    box-shadow: 3px 3px black;
+}
+input[type="password"]{
+    border-width: 2px;
+    border-radius: 7px;
+    transition: all 0.3s ease;
+}
+input[type="password"]:hover{
+    box-shadow: 3px 3px black;
+}
