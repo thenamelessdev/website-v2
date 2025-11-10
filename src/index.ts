@@ -46,6 +46,9 @@ app.get("/who", (req: Request, res: Response) => {
 app.get("/style.css", (req: Request, res: Response) => {
     res.sendFile(rootdir + "/views/style.css");
 });
+app.get("/logo", (req: Request, res: Response) => {
+    res.sendFile(rootdir + "/assets/images/logo.png");
+});
 
 //404 page
 app.use((req: Request, res: Response) => {
