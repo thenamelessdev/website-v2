@@ -13,6 +13,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 const port = process.env.port || 8080;
 app.use(session({
@@ -35,6 +36,9 @@ const rootdir = path.join(__dirname, "..");
 //routes
 import projectsRouter from "./routes/projects.js";
 app.use("/projects", projectsRouter);
+
+import adminRoter from "./routes/admin.js";
+app.use("/admin", adminRoter);
 
 //main things
 app.get("/", (req: Request, res: Response) => {
