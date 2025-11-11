@@ -2,6 +2,7 @@ import { error } from "console";
 import express, { Request, Response, urlencoded } from "express";
 const router = express.Router();
 const secret = process.env.CfSecret || "im missing";
+console.log(secret);
 
 async function verify(token: string) {
     const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
