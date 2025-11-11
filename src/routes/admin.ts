@@ -10,6 +10,7 @@ async function verify(token: string) {
         body: new URLSearchParams({ secret, response: token }),
     });
     const result = await verify.json();
+    console.log(result);
     if(result.success) {
         return true;
     }
