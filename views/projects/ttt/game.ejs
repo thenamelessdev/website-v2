@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game - <%= room %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/logo" type="image/png">
+</head>
+<body>
+    <h1>Welcome to lobby <%= room %></h1>
+    <p>Host: <%= host %></p>
+    <br>
+    <p id="socketstat">Web socket loading..</p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on("connect", () => {
+            socket.emit("room", "<%= room %>");
+            document.getElementById("socketstat").textContent = "Web socket connected";
+        });
+    </script>
+</body>
+</html>

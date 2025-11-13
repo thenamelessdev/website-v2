@@ -1,6 +1,9 @@
 import express, { Request, Response, Router } from "express";
 const router = express.Router();
 
+import tttRouter from "./ttt.js";
+router.use("/ttt", tttRouter);
+
 router.get("/", (req: Request, res: Response) => {
     res.render("projects");
 });

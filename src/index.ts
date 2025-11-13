@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 import http from "http";
 import { Server } from "socket.io";
+import { rooms } from "./routes/ttt.js";
 
 //vars and conf
 dotenv.config();
@@ -66,6 +67,10 @@ io.on("connection", (socket) => {
     socket.on("click", () => {
         clicks++;
         io.emit("clicks", clicks);
+    });
+
+    socket.on("room", (data) => {
+        console.log(data + " connected");
     });
 });
 
