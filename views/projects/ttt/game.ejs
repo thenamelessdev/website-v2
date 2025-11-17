@@ -23,8 +23,8 @@
             socket.emit("room", "<%= room %>");
             document.getElementById("socketstat").textContent = "Web socket connected";
         });
-        socket.on("playerJoin", (data) => {
-            const stuff = JSON.parse(data);
+        socket.on("playerJoin", async (data) => {
+            const stuff = await JSON.parse(data);
             if (stuff.room == room){
                 player.textContent = `Player: ${stuff.username}`;
             }
