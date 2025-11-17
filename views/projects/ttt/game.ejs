@@ -24,8 +24,9 @@
             document.getElementById("socketstat").textContent = "Web socket connected";
         });
         socket.on("playerJoin", (data) => {
-            if (data.room == room){
-                player.textContent = `Player: ${data.username}`;
+            const stuff = data.json();
+            if (stuff.room == room){
+                player.textContent = `Player: ${stuff.username}`;
             }
         });
     </script>
