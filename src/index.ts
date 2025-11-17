@@ -27,6 +27,11 @@ app.use(session({
 }));
 export const io = new Server(server);
 let clicks = 0;
+const demo = process.env.demo || "false"
+
+if(demo == "true"){
+    console.warn("WARNING: THIS IS DEMO MODE. SECURITY THINGS ARE DISABLED");
+}
 
 //rootdir
 const __filename = fileURLToPath(import.meta.url);
