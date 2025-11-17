@@ -10,23 +10,23 @@
 <body>
     <h1>Welcome to lobby <%= room %></h1>
     <p>Host: <%= host %></p>
-    <p>You: <%= player %></p>
-    <p id="player">Player: none</p>
+    <p>You: <%= you %></p>
+    <p id="player">Player: <%= player %></p>
     <br>
     <p id="socketstat">Web socket loading..</p>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const player = document.getElementById("player");
+        const room = "<%= room %>"
 
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
             document.getElementById("socketstat").textContent = "Web socket connected";
         });
-        socket.on("playerJoin", async (data) => {
-            if (data.room == room){
-                player.textContent = `Player: ${data.username}`;
-            }
+        socket.on("info", async (data) => {
+            if(data.room == room)
+            player.textContent = `Player: ${data.username}`;
         });
     </script>
 </body>

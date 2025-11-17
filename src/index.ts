@@ -72,7 +72,6 @@ io.on("connection", (socket) => {
         clicks++;
         io.emit("clicks", clicks);
     });
-
     socket.on("room", (data) => {
         console.log(data + " connected");
     });
