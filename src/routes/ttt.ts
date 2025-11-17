@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import { io } from "../index.js";
 const router = express.Router();
 
 interface Room {
@@ -19,7 +20,7 @@ router.post("/rooms", (req: Request, res: Response) => {
     }
     else{
         rooms[room] = { name: room, host: name };
-        res.render("projects/ttt/game", { room: room, host: name });
+        res.render("projects/ttt/game", { room: room, host: name, player: name });
     }
 
 });
@@ -30,7 +31,8 @@ router.post("/join", (req: Request, res: Response) => {
     if(rooms[room]){
         if(!rooms[room].player){
             rooms[room].player = username;
-            res.render("projects/ttt/game", { room: room, host: rooms[room].host });
+            res.render("projects/ttt/game", { room: room, host: rooms[room].host, player: username });
+            io.emit("playerJoin", ({ room: room, username: username }));
         }
         else{
             res.render("error", { error: "player aleady joined this lobby" });

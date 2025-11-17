@@ -7,7 +7,6 @@ import { fileURLToPath } from "url";
 import path from "path";
 import http from "http";
 import { Server } from "socket.io";
-import { rooms } from "./routes/ttt.js";
 
 //vars and conf
 dotenv.config();
@@ -26,7 +25,7 @@ app.use(session({
         collectionName: "session"
     })
 }));
-const io = new Server(server);
+export const io = new Server(server);
 let clicks = 0;
 
 //rootdir
