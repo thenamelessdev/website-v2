@@ -72,9 +72,6 @@ io.on("connection", (socket) => {
         clicks++;
         io.emit("clicks", clicks);
     });
-    socket.on("room", (data) => {
-        console.log(data + " connected");
-    });
 });
 
 server.listen({port, host: "0.0.0.0"});
