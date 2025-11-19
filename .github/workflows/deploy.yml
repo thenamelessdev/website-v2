@@ -1,0 +1,11 @@
+name: Deploy
+
+on:
+    push
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: curl -X POST "${{ secrets.DEPLOY }}"
