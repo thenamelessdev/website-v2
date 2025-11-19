@@ -6,19 +6,68 @@
     <title>Game - <%= room %></title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+        }
+        .row{
+            display: flex;
+            gap: 10px;
+            margin: 0px;
+        }
+        p{
+            margin: 0px;
+        }
+        .row p{
+            margin: 1px;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to lobby <%= room %></h1>
     <p>Host: <%= host %></p>
     <p>You: <%= you %></p>
     <p id="player">Player: <%= player %></p>
+    <p>You are <%= role %></p>
+    <br>
+
+    <h3>Game:</h3>
+    <p>E: empty, X: host, O: player</p>
+    <br>
+
+    <div class="row">
+        <p id="a1">E</p>
+        <p id="a2">E</p>
+        <p id="a3">E</p>
+    </div>
+
+    <div class="row">
+        <p id="b1">E</p>
+        <p id="b2">E</p>
+        <p id="b3">E</p>
+    </div>
+
+    <div class="row">
+        <p id="c1">E</p>
+        <p id="c2">E</p>
+        <p id="c3">E</p>
+    </div>
+
     <br>
     <p id="socketstat">Web socket loading..</p>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        const player = document.getElementById("player");
+        const playerText = document.getElementById("player");
+        let player = "<%= player %>"
         const room = "<%= room %>"
+        const role = "<%= role %>";
+        const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
 
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
@@ -26,7 +75,37 @@
         });
         socket.on("info", async (data) => {
             if(data.room == room)
-            player.textContent = `Player: ${data.username}`;
+            playerText.textContent = `Player: ${data.username}`;
+            player = data.username;
+        });
+        socket.on("move", (data) => {
+            const moveRoom = data.room;
+            const move = data.move;
+            const player = data.player;
+            if (room == moveRoom){
+                document.getElementById(move).textContent = player;
+            }
+        });
+
+
+
+
+        cells.forEach(move => {
+            const cell = document.getElementById(move);
+
+            cell.addEventListener("click", () => {
+                if(cell.textContent === "E" && player != "none"){
+                    fetch("/projects/ttt/move", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            room: room,
+                            player: role,
+                            move: move
+                        })
+                    });
+                }
+            });
         });
     </script>
 </body>
