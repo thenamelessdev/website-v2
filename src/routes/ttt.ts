@@ -20,7 +20,7 @@ router.post("/rooms", (req: Request, res: Response) => {
     }
     else{
         rooms[room] = { name: room, host: name };
-        res.render("projects/ttt/game", { room: room, host: name, player: name });
+        res.render("projects/ttt/game", { room: room, host: name, you: rooms[room].host, player: "none" });
     }
 
 });
@@ -30,9 +30,14 @@ router.post("/join", (req: Request, res: Response) => {
 
     if(rooms[room]){
         if(!rooms[room].player){
-            rooms[room].player = username;
-            res.render("projects/ttt/game", { room: room, host: rooms[room].host, player: username });
-            io.emit("playerJoin", ({ room: room, username: username }));
+            if(rooms[room].host == username){
+                res.render("error", { error: "Your username is the same as teh host's" })
+            }
+            else{
+                rooms[room].player = username;
+                res.render("projects/ttt/game", { room: room, host: rooms[room].host, you: username, player: username });
+                io.emit("info", ({ room: room, username: username }));
+            }
         }
         else{
             res.render("error", { error: "player aleady joined this lobby" });
@@ -42,5 +47,8 @@ router.post("/join", (req: Request, res: Response) => {
         res.render("error", { error: "room doesn't exist" });
     }
 });
+
+
+
 
 export default router;
