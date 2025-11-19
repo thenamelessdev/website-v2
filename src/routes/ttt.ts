@@ -8,6 +8,16 @@ interface Room {
     player?: string;
 }
 
+/*
+    A table looks like this:
+    A1 A2 A3
+    B1 B2 B3
+    C1 C2 C3
+
+    for example the middle is B2
+ */
+
+
 export let rooms: Record<string, Room> = {};
 
 router.get("/", (req: Request, res: Response) => {
@@ -20,7 +30,7 @@ router.post("/rooms", (req: Request, res: Response) => {
     }
     else{
         rooms[room] = { name: room, host: name };
-        res.render("projects/ttt/game", { room: room, host: name, you: rooms[room].host, player: "none" });
+        res.render("projects/ttt/game", { room: room, host: name, you: rooms[room].host, player: "none", role: "X" });
     }
 
 });
@@ -35,7 +45,7 @@ router.post("/join", (req: Request, res: Response) => {
             }
             else{
                 rooms[room].player = username;
-                res.render("projects/ttt/game", { room: room, host: rooms[room].host, you: username, player: username });
+                res.render("projects/ttt/game", { room: room, host: rooms[room].host, you: username, player: username, role: "O" });
                 io.emit("info", ({ room: room, username: username }));
             }
         }
@@ -48,7 +58,11 @@ router.post("/join", (req: Request, res: Response) => {
     }
 });
 
-
+router.post("/move", (req: Request, res: Response) => {
+    const { room, player, move } = req.body;
+    io.emit("move", ({ room: room, move: move, player: player }));
+    res.status(204).send();
+});
 
 
 export default router;
