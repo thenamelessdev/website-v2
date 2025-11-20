@@ -57,9 +57,9 @@
         <p id="c2">E</p>
         <p id="c3">E</p>
     </div>
-
+    <p id="turn">X's turn</p>
     <br>
-    <p id="socketstat">Web socket loading..</p>
+    <button id="resetBtn">Reset</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -68,10 +68,24 @@
         const room = "<%= room %>"
         const role = "<%= role %>";
         const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
+        let turn = "X"
+
+
+        function reset(){
+            socket.emit("resetReq", ({ room: room }));
+        }
+
+
 
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
-            document.getElementById("socketstat").textContent = "Web socket connected";
+        });
+        socket.on("reset", (data) => {
+            if(data.room == room){
+                cells.forEach(id => {
+                    document.getElementById(id).textContent = "E";
+                });
+            }
         });
         socket.on("info", async (data) => {
             if(data.room == room)
@@ -84,17 +98,21 @@
             const player = data.player;
             if (room == moveRoom){
                 document.getElementById(move).textContent = player;
+                turn = data.turn;
+                document.getElementById("turn").textContent = `${turn}'s turn`;
             }
         });
 
-
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            reset();
+        });
 
 
         cells.forEach(move => {
             const cell = document.getElementById(move);
 
             cell.addEventListener("click", () => {
-                if(cell.textContent === "E" && player != "none"){
+                if(cell.textContent === "E" && player != "none" && role == turn){
                     fetch("/projects/ttt/move", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },

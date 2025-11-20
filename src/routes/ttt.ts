@@ -6,6 +6,7 @@ interface Room {
     name: string;
     host: string;
     player?: string;
+    turn: string;
 }
 
 /*
@@ -29,7 +30,7 @@ router.post("/rooms", (req: Request, res: Response) => {
         res.render("error", { error: "Room name already exists" });
     }
     else{
-        rooms[room] = { name: room, host: name };
+        rooms[room] = { name: room, host: name, turn: "X" };
         res.render("projects/ttt/game", { room: room, host: name, you: rooms[room].host, player: "none", role: "X" });
     }
 
@@ -60,7 +61,14 @@ router.post("/join", (req: Request, res: Response) => {
 
 router.post("/move", (req: Request, res: Response) => {
     const { room, player, move } = req.body;
-    io.emit("move", ({ room: room, move: move, player: player }));
+    const turn = rooms[room].turn;
+    if(turn == "X"){
+        rooms[room].turn = "O"
+    }
+    else{
+        rooms[room].turn = "X"
+    }
+    io.emit("move", ({ room: room, move: move, player: player, turn: rooms[room].turn }));
     res.status(204).send();
 });
 
