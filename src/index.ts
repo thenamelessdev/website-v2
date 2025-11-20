@@ -43,6 +43,7 @@ import projectsRouter from "./routes/projects.js";
 app.use("/projects", projectsRouter);
 
 import adminRoter from "./routes/admin.js";
+import { rooms } from "./routes/ttt.js";
 app.use("/admin", adminRoter);
 
 //main things
@@ -75,6 +76,10 @@ io.on("connection", (socket) => {
     socket.on("resetReq", (data) => {
         const room = data.room;
         io.emit("reset", ({ room: room }));
+    });
+    socket.on("getTurn", (data) => {
+        const room = data.room;
+        socket.emit("turns", ({turn: rooms[room].turn}));
     });
 });
 
