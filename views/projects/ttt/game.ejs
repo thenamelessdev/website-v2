@@ -57,9 +57,8 @@
         <p id="c2">E</p>
         <p id="c3">E</p>
     </div>
-
+    <p id="turn">X's turn</p>
     <br>
-    <p id="socketstat">Web socket loading..</p>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -72,7 +71,6 @@
 
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
-            document.getElementById("socketstat").textContent = "Web socket connected";
         });
         socket.on("info", async (data) => {
             if(data.room == room)
@@ -86,6 +84,7 @@
             if (room == moveRoom){
                 document.getElementById(move).textContent = player;
                 turn = data.turn;
+                document.getElementById("turn").textContent = `${turn}'s turn`;
             }
         });
 
