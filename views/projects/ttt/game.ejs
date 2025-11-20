@@ -59,6 +59,7 @@
     </div>
     <p id="turn">X's turn</p>
     <br>
+    <button id="resetBtn">Reset</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -69,8 +70,22 @@
         const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
         let turn = "X"
 
+
+        function reset(){
+            socket.emit("resetReq", ({ room: room }));
+        }
+
+
+
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
+        });
+        socket.on("reset", (data) => {
+            if(data.room == room){
+                cells.forEach(id => {
+                    document.getElementById(id).textContent = "E";
+                });
+            }
         });
         socket.on("info", async (data) => {
             if(data.room == room)
@@ -88,7 +103,9 @@
             }
         });
 
-
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            reset();
+        });
 
 
         cells.forEach(move => {

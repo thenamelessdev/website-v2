@@ -72,6 +72,10 @@ io.on("connection", (socket) => {
         clicks++;
         io.emit("clicks", clicks);
     });
+    socket.on("resetReq", (data) => {
+        const room = data.room;
+        io.emit("reset", ({ room: room }));
+    });
 });
 
 server.listen({port, host: "0.0.0.0"});
