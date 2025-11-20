@@ -68,6 +68,7 @@
         const room = "<%= room %>"
         const role = "<%= role %>";
         const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
+        let turn = "X"
 
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
@@ -84,6 +85,7 @@
             const player = data.player;
             if (room == moveRoom){
                 document.getElementById(move).textContent = player;
+                turn = data.turn;
             }
         });
 
@@ -94,7 +96,7 @@
             const cell = document.getElementById(move);
 
             cell.addEventListener("click", () => {
-                if(cell.textContent === "E" && player != "none"){
+                if(cell.textContent === "E" && player != "none" && role == turn){
                     fetch("/projects/ttt/move", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
