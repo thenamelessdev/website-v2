@@ -110,6 +110,7 @@
         setInterval(() => {
             socket.emit("getTurn", ({ room: room }));
         }, 1000);
+        
         socket.on("turns", (data) => {
             turn = data.turn;
         });

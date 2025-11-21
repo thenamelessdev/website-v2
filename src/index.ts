@@ -60,6 +60,11 @@ app.get("/logo", (req: Request, res: Response) => {
     res.sendFile(rootdir + "/assets/images/logo.png");
 });
 
+app.get("/error/:error", (req: Request, res: Response) => {
+    const { error } = req.params;
+    res.render("error", { error: error });
+});
+
 //404 page
 app.use((req: Request, res: Response) => {
     res.status(404).render("404");
