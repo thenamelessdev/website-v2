@@ -1,0 +1,19 @@
+export default async function verify(request: any) {
+    const token = request.body["cf-turnstile-response"];
+    const secret = process.env.CfSecret || "im missing";
+    const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ secret, response: token }),
+    });
+    const result = await verify.json();
+    if(result.success || process.env.demo == "true") {
+        return true;
+    }
+    else if(!result.success){
+        return false;
+    }
+    else{
+        return false;
+    }
+}

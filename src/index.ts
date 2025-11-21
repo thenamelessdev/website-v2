@@ -43,6 +43,7 @@ import projectsRouter from "./routes/projects.js";
 app.use("/projects", projectsRouter);
 
 import adminRoter from "./routes/admin.js";
+import { rooms } from "./routes/ttt.js";
 app.use("/admin", adminRoter);
 
 //main things
@@ -57,6 +58,11 @@ app.get("/style.css", (req: Request, res: Response) => {
 });
 app.get("/logo", (req: Request, res: Response) => {
     res.sendFile(rootdir + "/assets/images/logo.png");
+});
+
+app.get("/error/:error", (req: Request, res: Response) => {
+    const { error } = req.params;
+    res.render("error", { error: error });
 });
 
 //404 page
@@ -75,6 +81,10 @@ io.on("connection", (socket) => {
     socket.on("resetReq", (data) => {
         const room = data.room;
         io.emit("reset", ({ room: room }));
+    });
+    socket.on("getTurn", (data) => {
+        const room = data.room;
+        socket.emit("turns", ({turn: rooms[room].turn}));
     });
 });
 

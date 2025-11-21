@@ -6,6 +6,11 @@
     <title>Tik Tak Toe</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
+></script>
 </head>
 <body>
     <h1>Tik tak toe</h1>
@@ -19,6 +24,8 @@
         <label for="name">Username: </label>
         <input type="text" name="name" id="name" required>
         <br>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+        <br>
         <input type="submit" value="Create Room">
     </form>
 
@@ -29,6 +36,8 @@
         <br>
         <label for="username">Username: </label>
         <input type="text" name="username" id="username" required>
+        <br>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
         <br>
         <input type="submit" value="Join">
     </form>
