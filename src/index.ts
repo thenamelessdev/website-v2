@@ -82,9 +82,10 @@ io.on("connection", (socket) => {
         const room = data.room;
         io.emit("reset", ({ room: room }));
     });
-    socket.on("getTurn", (data) => {
+    socket.on("delete", (data) => {
         const room = data.room;
-        socket.emit("turns", ({turn: rooms[room].turn}));
+        io.emit("delete", ({ room: room }));
+        delete rooms[room];
     });
 });
 

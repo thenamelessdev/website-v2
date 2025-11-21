@@ -20,11 +20,15 @@
             margin: 0px;
         }
         .row p{
+            display: block;
             margin: 1px;
+            padding: 10px;
             cursor: pointer;
             user-select: none;
-            border: 1px solid black;
-            border-radius: 5px;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 30px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -41,49 +45,62 @@
     <br>
 
     <div class="row">
-        <p id="a1">E</p>
-        <p id="a2">E</p>
-        <p id="a3">E</p>
+        <p id="a1">-</p>
+        <p id="a2">-</p>
+        <p id="a3">-</p>
     </div>
 
     <div class="row">
-        <p id="b1">E</p>
-        <p id="b2">E</p>
-        <p id="b3">E</p>
+        <p id="b1">-</p>
+        <p id="b2">-</p>
+        <p id="b3">-</p>
     </div>
 
     <div class="row">
-        <p id="c1">E</p>
-        <p id="c2">E</p>
-        <p id="c3">E</p>
+        <p id="c1">-</p>
+        <p id="c2">-</p>
+        <p id="c3">-</p>
     </div>
     <p id="turn">X's turn</p>
     <br>
-    <button id="resetBtn">Reset</button>
+    <button id="resetBtn" disabled>Reset</button>
+    <button id="deleteBtn" disabled>Delete</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const playerText = document.getElementById("player");
         let player = "<%= player %>"
+        const you = "<%= you %>"
+        const host = "<%= host %>"
         const room = "<%= room %>"
         const role = "<%= role %>";
         const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
         let turn = "X"
 
+        if(you == host){
+            document.getElementById("deleteBtn").disabled = false;
+            document.getElementById("resetBtn").disabled = false;
+        }
+
 
         function reset(){
             socket.emit("resetReq", ({ room: room }));
         }
+        function del(){
+            socket.emit("delete", ({ room: room }));
+        };
 
 
-
+        socket.on("delete", (data) => {
+            location.href = "/error/Host deleted the room";
+        });
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
         });
         socket.on("reset", (data) => {
             if(data.room == room){
                 cells.forEach(id => {
-                    document.getElementById(id).textContent = "E";
+                    document.getElementById(id).textContent = "-";
                 });
             }
         });
@@ -106,21 +123,17 @@
         document.getElementById("resetBtn").addEventListener("click", () => {
             reset();
         });
-
-        setInterval(() => {
-            socket.emit("getTurn", ({ room: room }));
-        }, 1000);
-        
-        socket.on("turns", (data) => {
-            turn = data.turn;
+        document.getElementById("deleteBtn").addEventListener("click", () => {
+            del();
         });
+
 
 
         cells.forEach(move => {
             const cell = document.getElementById(move);
 
             cell.addEventListener("click", () => {
-                if(cell.textContent === "E" && player != "none" && role == turn){
+                if(cell.textContent === "-" && player != "none" && role == turn){
                     fetch("/projects/ttt/move", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
