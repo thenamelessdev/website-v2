@@ -14,15 +14,14 @@ router.get("/", (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
     const { username, password, } = req.body;
-    const token = req.body["cf-turnstile-response"];
 
     if(username == process.env.adminUname && password == process.env.adminPassw){
         if(demo != "true"){
-            if(await verify(token)) {
+            if(await verify(req)) {
                 req.session.adminUname = username;
                 res.render("admin/panel");
             }
-            else if(await !verify(token)){
+            else if(await !verify(req)){
                 res.render("error", { error: "Cloudflare turnstile failed. Please try again." });
             }
             else{

@@ -1,4 +1,5 @@
-export default async function verify(token: string) {
+export default async function verify(request: any) {
+    const token = request.body["cf-turnstile-response"];
     const secret = process.env.CfSecret || "im missing";
     const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
         method: "POST",
