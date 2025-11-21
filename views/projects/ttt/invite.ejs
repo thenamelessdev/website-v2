@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite</title>
+    <link rel="stylesheet" href="/style.css">
+    <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
+></script>
+</head>
+<body>
+    <form action="/projects/ttt/join" method="post">
+        <label for="room">Room: </label>
+        <input type="text" name="room" id="room" value="<%= code %>" disabled>
+        <br>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <br>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+        <br>
+        <input type="submit" value="Join">
+    </form>
+</body>
+</html>

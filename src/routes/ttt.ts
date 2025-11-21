@@ -69,6 +69,12 @@ router.post("/join", async (req: Request, res: Response) => {
     }
 });
 
+router.get("/invite/:code", (req: Request, res: Response) => {
+    const { code } = req.params;
+
+    res.render("projects/ttt/invite", { code: code });
+});
+
 router.post("/move", (req: Request, res: Response) => {
     const { room, player, move } = req.body;
     const turn = rooms[room].turn;
