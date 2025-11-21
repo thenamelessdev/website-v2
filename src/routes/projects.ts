@@ -34,6 +34,9 @@ router.get("/:project", (req: Request, res: Response) => {
             }
         }
     }
+    else if(project == "suggestion"){
+        res.render("projects/suggestions");
+    }
     else {
         res.render("404");
     }

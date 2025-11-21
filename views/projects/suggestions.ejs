@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/logo" type="image/png">
+</head>
+<body>
+    <h1>Suggestions</h1>
+    <a href="/projects"><button>Go back</button></a>
+    <hr>
+    <input type="text" id="suggestion">
+    <input type="submit" id="submit" value="Submit">
+    <br>
+    <p id="result">Make a suggestion</p>
+    <script>
+        const result = document.getElementById("result");
+
+        document.getElementById("submit").addEventListener("click", () => {
+            result.textContent = "Please wait..";
+            setTimeout(() => {
+                result.textContent = "Reading suggestion..";
+                setTimeout(() => {
+                    result.textContent = "Trashing suggestion..";
+                    setTimeout(() => {
+                        result.textContent = "Suggestion trashed.";
+                    }, 2000);
+                }, 2000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
