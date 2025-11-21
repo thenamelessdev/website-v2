@@ -7,7 +7,7 @@ export default async function verify(request: any) {
         body: new URLSearchParams({ secret, response: token }),
     });
     const result = await verify.json();
-    if(result.success) {
+    if(result.success || process.env.demo == "true") {
         return true;
     }
     else if(!result.success){
