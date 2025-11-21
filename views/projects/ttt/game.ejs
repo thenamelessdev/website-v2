@@ -63,24 +63,37 @@
     </div>
     <p id="turn">X's turn</p>
     <br>
-    <button id="resetBtn">Reset</button>
+    <button id="resetBtn" disabled>Reset</button>
+    <button id="deleteBtn" disabled>Delete</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const playerText = document.getElementById("player");
         let player = "<%= player %>"
+        const you = "<%= you %>"
+        const host = "<%= host %>"
         const room = "<%= room %>"
         const role = "<%= role %>";
         const cells = ["a1","a2","a3","b1","b2","b3","c1","c2","c3"];
         let turn = "X"
 
+        if(you == host){
+            document.getElementById("deleteBtn").disabled = false;
+            document.getElementById("resetBtn").disabled = false;
+        }
+
 
         function reset(){
             socket.emit("resetReq", ({ room: room }));
         }
+        function del(){
+            socket.emit("delete", ({ room: room }));
+        };
 
 
-
+        socket.on("delete", (data) => {
+            location.href = "/error/Host deleted the room";
+        });
         socket.on("connect", () => {
             socket.emit("room", "<%= room %>");
         });
@@ -110,14 +123,10 @@
         document.getElementById("resetBtn").addEventListener("click", () => {
             reset();
         });
-
-        setInterval(() => {
-            socket.emit("getTurn", ({ room: room }));
-        }, 1000);
-
-        socket.on("turns", (data) => {
-            turn = data.turn;
+        document.getElementById("deleteBtn").addEventListener("click", () => {
+            del();
         });
+
 
 
         cells.forEach(move => {
