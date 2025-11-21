@@ -1,7 +1,8 @@
-name: Deploy
+name: Deploy-main
 
 on:
-    push
+    push:
+        branches: ["main"]
 
 jobs:
     deploy:
@@ -14,5 +15,5 @@ jobs:
                 username: ${{ secrets.SERVER_USERNAME }}
                 password: ${{ secrets.SERVER_PASSW }}
                 script: |
-                    bash ~/update.sh
+                    bash ~/update-main.sh
                 strict_host_key_checking: false
