@@ -3,6 +3,7 @@ name: Deploy-main
 on:
     push:
         branches: ["main"]
+    workflow_dispatch:
 
 jobs:
     deploy:
@@ -16,4 +17,3 @@ jobs:
                 password: ${{ secrets.SERVER_PASSW }}
                 script: |
                     bash ~/update-main.sh
-                strict_host_key_checking: false

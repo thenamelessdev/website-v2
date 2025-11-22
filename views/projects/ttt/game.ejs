@@ -129,6 +129,23 @@
             del();
         });
 
+        setInterval(() => {
+            fetch("/projects/ttt/turn", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    room: room
+                })
+            });
+        }, 3000);
+        socket.on("turn", (data) => {
+            if (data.room == room){
+                turn = data.turn;
+            }
+        });
+
 
 
         cells.forEach(move => {
