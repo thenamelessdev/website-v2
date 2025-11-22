@@ -88,5 +88,10 @@ router.post("/move", (req: Request, res: Response) => {
     res.status(204).send();
 });
 
+router.post("/turn", (req: Request, res: Response) => {
+    const { room } = req.body;
+    res.status(204).send();
+    io.emit("turn", ({ room: room, turn: rooms[room].turn }));
+});
 
 export default router;
