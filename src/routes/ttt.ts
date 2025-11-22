@@ -48,7 +48,7 @@ router.post("/join", async (req: Request, res: Response) => {
         if(rooms[room]){
             if(!rooms[room].player){
                 if(rooms[room].host == username){
-                    res.render("error", { error: "Your username is the same as teh host's" })
+                    res.render("error", { error: "Your username is the same as the host's" })
                 }
                 else{
                     rooms[room].player = username;
