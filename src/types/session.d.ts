@@ -3,6 +3,7 @@ import "express-session";
 declare module "express-session" {
   interface SessionData {
     views?: number;
-    adminUname?: string
+    adminUname?: string;
+    username?: string;
   }
 }
