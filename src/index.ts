@@ -7,6 +7,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 import http from "http";
 import { Server } from "socket.io";
+import { rooms } from "./routes/ttt.js";
+
 
 //vars and conf
 dotenv.config();
@@ -43,8 +45,10 @@ import projectsRouter from "./routes/projects.js";
 app.use("/projects", projectsRouter);
 
 import adminRoter from "./routes/admin.js";
-import { rooms } from "./routes/ttt.js";
 app.use("/admin", adminRoter);
+
+import usersRouter from "./routes/users.js";
+app.use("/users", usersRouter);
 
 //main things
 app.get("/", (req: Request, res: Response) => {
