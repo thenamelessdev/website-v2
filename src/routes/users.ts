@@ -71,5 +71,14 @@ router.get("/dashboard", (req: Request, res: Response) => {
     }
 });
 
+router.get("/dashboard/api", (req: Request, res: Response) => {
+    if (req.session.username){
+        res.render("users/api");
+    }
+    else{
+        res.redirect("/users");
+    }
+});
+
 
 export default router;
