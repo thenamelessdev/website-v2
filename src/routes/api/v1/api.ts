@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { addKey, verifyKey } from "../functions.js";
+import { addKey, verifyKey } from "../../../functions.js";
 const router = express.Router();
 
 router.put("/create", async (req:Request, res:Response) => {
@@ -43,5 +43,12 @@ router.get("/verify", async (req:Request, res: Response) => {
         });
     }
 });
+
+router.use((req: Request, res: Response) => {
+    res.status(404).json({
+        error: "404 not found"
+  });
+});
+
 
 export default router;
