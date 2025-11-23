@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/logo" type="image/png">
+</head>
+<body>
+    <h1>API dashboard</h1>
+    <a href="/users"><button>Go back</button></a>
+    <hr>
+    <h3>Create API key</h3>
+    <button id="createKey">Create api key</button>
+    <p id="result"></p>
+    
+    <script>
+        const createBtn = document.getElementById("createKey");
+        const result = document.getElementById("result");
+
+        createBtn.addEventListener("click", async () => {
+            const key = await fetch("/api/create", {
+                method: "PUT"
+            });
+            const keyJson = await key.json();
+            if (key.ok){
+                result.textContent = keyJson.key;
+            }
+            else{
+                result.textContent = "There was an error while generating your api key.";
+            }
+        });
+    </script>
+</body>
+</html>

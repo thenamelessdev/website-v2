@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import { io } from "../index.js";
 const router = express.Router();
-import verify from "../verify.js";
+import { verify } from "../functions.js";
 
 interface Room {
     name: string;

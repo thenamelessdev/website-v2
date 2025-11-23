@@ -8,6 +8,7 @@ import path from "path";
 import http from "http";
 import { Server } from "socket.io";
 import { rooms } from "./routes/ttt.js";
+import { readFileSync, writeFileSync } from "fs";
 
 
 //vars and conf
@@ -49,6 +50,8 @@ app.use("/admin", adminRoter);
 
 import usersRouter from "./routes/users.js";
 app.use("/users", usersRouter);
+import apiRouter from "./routes/api.js";
+app.use("/api", apiRouter);
 
 //main things
 app.get("/", (req: Request, res: Response) => {
