@@ -20,7 +20,7 @@
         const result = document.getElementById("result");
 
         createBtn.addEventListener("click", async () => {
-            const key = await fetch("/api/create", {
+            const key = await fetch("/api/v1/create", {
                 method: "PUT"
             });
             const keyJson = await key.json();

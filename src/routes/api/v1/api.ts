@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { addKey, verifyKey } from "../functions.js";
+import { addKey, verifyKey } from "../../../functions.js";
 const router = express.Router();
 
 router.put("/create", async (req:Request, res:Response) => {

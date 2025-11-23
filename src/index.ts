@@ -50,8 +50,8 @@ app.use("/admin", adminRoter);
 
 import usersRouter from "./routes/users.js";
 app.use("/users", usersRouter);
-import apiRouter from "./routes/api.js";
-app.use("/api", apiRouter);
+import apiRouter from "./routes/api/v1/api.js";
+app.use("/api/v1", apiRouter);
 
 //main things
 app.get("/", (req: Request, res: Response) => {
