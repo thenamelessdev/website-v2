@@ -1,5 +1,6 @@
-import express, { Request, Response, Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import { addKey, verifyKey } from "../../../functions.js";
+import { nextTick } from "process";
 const router = express.Router();
 
 router.put("/create", async (req:Request, res:Response) => {
@@ -24,17 +25,11 @@ router.put("/create", async (req:Request, res:Response) => {
     }
 });
 
-router.get("/verify", async (req:Request, res: Response) => {
+router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
-
     if (auth){
-        if(await verifyKey(auth.toString())){
-            res.sendStatus(204);
-        }
-        else{
-            res.status(401).json({
-                "error": "Invalid API key"
-            });
+        if (await verifyKey(auth.toString())){
+            next();
         }
     }
     else{
@@ -42,6 +37,10 @@ router.get("/verify", async (req:Request, res: Response) => {
             "error": "missing auth header"
         });
     }
+});
+
+router.get("/verify", async (req:Request, res: Response) => {
+    res.sendStatus(204);
 });
 
 router.use((req: Request, res: Response) => {
