@@ -1,8 +1,8 @@
-import express, { Request, Response, Router } from "express";
-import { addKey, verifyKey } from "../../../functions.js";
+import express, { NextFunction, Request, Response, Router } from "express";
+import { addKey, verifyKey, deleteKey } from "../../../functions.js";
 const router = express.Router();
 
-router.put("/create", async (req:Request, res:Response) => {
+router.put("/keys", async (req:Request, res:Response) => {
     const username = req.session.username;
     if (username){
         const key = await addKey(username);
@@ -12,8 +12,8 @@ router.put("/create", async (req:Request, res:Response) => {
             })
         }
         else{
-            res.status(500).json({
-                "error": "Couldn't add key to database."
+            res.status(400).json({
+                error: "User already has a key."
             });
         }
     }
@@ -24,17 +24,32 @@ router.put("/create", async (req:Request, res:Response) => {
     }
 });
 
-router.get("/verify", async (req:Request, res: Response) => {
-    const { auth } = req.headers;
+router.delete("/keys", async (req: Request, res: Response) => {
+    const username = req.session.username;
 
-    if (auth){
-        if(await verifyKey(auth.toString())){
-            res.sendStatus(204);
+    if(username){
+        const deleteApiKey = await deleteKey(username);
+        if(await deleteApiKey){
+            res.status(200).json({
+                message: "API key deleted"
+            });
         }
         else{
-            res.status(401).json({
-                "error": "Invalid API key"
+            res.status(400).json({
+                error: "You don't have a API key"
             });
+        }
+    }
+    else{
+        res.sendStatus(401);
+    }
+});
+
+router.use(async (req: Request, res: Response, next: NextFunction) => {
+    const { auth } = req.headers;
+    if (auth){
+        if (await verifyKey(auth.toString())){
+            next();
         }
     }
     else{
@@ -42,6 +57,10 @@ router.get("/verify", async (req:Request, res: Response) => {
             "error": "missing auth header"
         });
     }
+});
+
+router.get("/verify", async (req:Request, res: Response) => {
+    res.sendStatus(204);
 });
 
 router.use((req: Request, res: Response) => {

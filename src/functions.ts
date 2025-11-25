@@ -34,7 +34,7 @@ export async function addKey(username:string){
 
     const existingKey = json.keys.find((k:string) => k.startsWith(encodedUname));
     if(existingKey){
-        return existingKey;
+        return false;
     }
     else{
         const key = Math.floor(Math.random() * Math.random() * 581729) * 62399
@@ -55,6 +55,27 @@ export async function verifyKey(key:string){
     let json = await JSON.parse(raw.toString());
 
     if(json.keys.includes(key)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+export async function deleteKey(username:string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const keys = join(rootdir, "keys.json");
+
+    const raw = await readFileSync(keys);
+    let json = await JSON.parse(raw.toString());
+
+    const key = json.keys.find((k:string) => k.startsWith(btoa(username) + "."));
+
+    if(key){
+        json.keys = json.keys.filter((k: string) => k !== key)
+        await writeFileSync(keys, JSON.stringify(json));
         return true;
     }
     else{
