@@ -13,7 +13,7 @@ router.put("/create", async (req:Request, res:Response) => {
         }
         else{
             res.status(500).json({
-                "error": "Couldn't add key to database."
+                error: "User already has a key."
             });
         }
     }

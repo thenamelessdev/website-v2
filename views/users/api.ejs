@@ -28,7 +28,7 @@
                 result.textContent = keyJson.key;
             }
             else{
-                result.textContent = "There was an error while generating your api key.";
+                result.textContent = `There was an erroe while generating your api key: ${keyJson.error}`;
             }
         });
     </script>

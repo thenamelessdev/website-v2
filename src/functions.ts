@@ -34,7 +34,7 @@ export async function addKey(username:string){
 
     const existingKey = json.keys.find((k:string) => k.startsWith(encodedUname));
     if(existingKey){
-        return existingKey;
+        return false;
     }
     else{
         const key = Math.floor(Math.random() * Math.random() * 581729) * 62399
