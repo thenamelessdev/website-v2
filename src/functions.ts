@@ -61,3 +61,24 @@ export async function verifyKey(key:string){
         return false;
     }
 }
+
+export async function deleteKey(username:string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const keys = join(rootdir, "keys.json");
+
+    const raw = await readFileSync(keys);
+    let json = await JSON.parse(raw.toString());
+
+    const key = json.keys.find((k:string) => k.startsWith(btoa(username) + "."));
+
+    if(key){
+        json.keys = json.keys.filter((k: string) => k !== key)
+        await writeFileSync(keys, JSON.stringify(json));
+        return true;
+    }
+    else{
+        return false;
+    }
+}

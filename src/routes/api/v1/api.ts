@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { addKey, verifyKey } from "../../../functions.js";
+import { addKey, verifyKey, deleteKey } from "../../../functions.js";
 const router = express.Router();
 
-router.put("/create", async (req:Request, res:Response) => {
+router.put("/keys", async (req:Request, res:Response) => {
     const username = req.session.username;
     if (username){
         const key = await addKey(username);
@@ -12,7 +12,7 @@ router.put("/create", async (req:Request, res:Response) => {
             })
         }
         else{
-            res.status(500).json({
+            res.status(400).json({
                 error: "User already has a key."
             });
         }
@@ -21,6 +21,27 @@ router.put("/create", async (req:Request, res:Response) => {
         res.status(401).json({
             "error": "Login required"
         });
+    }
+});
+
+router.delete("/keys", async (req: Request, res: Response) => {
+    const username = req.session.username;
+
+    if(username){
+        const deleteApiKey = await deleteKey(username);
+        if(await deleteApiKey){
+            res.status(200).json({
+                message: "API key deleted"
+            });
+        }
+        else{
+            res.status(400).json({
+                error: "You don't have a API key"
+            });
+        }
+    }
+    else{
+        res.sendStatus(401);
     }
 });
 
