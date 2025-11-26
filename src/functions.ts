@@ -26,7 +26,7 @@ export async function addKey(username:string){
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const rootdir = join(__dirname, "..");
-    const keys = join(rootdir, "keys.json");
+    const keys = join(rootdir, "db.json");
 
     const raw = await readFileSync(keys);
     let json = await JSON.parse(raw.toString());
@@ -49,7 +49,7 @@ export async function verifyKey(key:string){
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const rootdir = join(__dirname, "..");
-    const keys = join(rootdir, "keys.json");
+    const keys = join(rootdir, "db.json");
 
     const raw = await readFileSync(keys);
     let json = await JSON.parse(raw.toString());
@@ -66,7 +66,7 @@ export async function deleteKey(username:string) {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const rootdir = join(__dirname, "..");
-    const keys = join(rootdir, "keys.json");
+    const keys = join(rootdir, "db.json");
 
     const raw = await readFileSync(keys);
     let json = await JSON.parse(raw.toString());
@@ -80,5 +80,45 @@ export async function deleteKey(username:string) {
     }
     else{
         return false;
+    }
+}
+
+export async function addClick() {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if (json.clicks){
+        json.clicks++;
+        await writeFileSync(db, JSON.stringify(json));
+        return true;
+    }
+    else{
+        json.clicks = 1;
+        await writeFileSync(db, JSON.stringify(json));
+        return true;
+    }
+}
+
+export async function getClicks() {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if (json.clicks){
+        return json.clicks;
+    }
+    else{
+        json.clicks = 0;
+        await writeFileSync(db, JSON.stringify(json));
+        return json.clicks;
     }
 }

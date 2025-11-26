@@ -9,7 +9,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { rooms } from "./routes/ttt.js";
 import { readFileSync, writeFileSync } from "fs";
-
+import { addClick, getClicks } from "./functions.js";
 
 //vars and conf
 dotenv.config();
@@ -29,7 +29,6 @@ app.use(session({
     })
 }));
 export const io = new Server(server);
-let clicks = 0;
 const demo = process.env.demo || "false"
 
 if(demo == "true"){
@@ -79,15 +78,18 @@ app.use((req: Request, res: Response) => {
 
 
 // websocket stuff
-io.on("connection", (socket) => {
-    socket.emit("clicks", clicks);
-    socket.on("click", () => {
-        clicks++;
-        io.emit("clicks", clicks);
+io.on("connection", async (socket) => {
+    
+    socket.emit("clicks", await getClicks());
+    socket.on("click", async () => {
+        await addClick();
+        io.emit("clicks", await getClicks());
     });
+
+
     socket.on("resetReq", (data) => {
         const room = data.room;
-        io.emit("reset", ({ room: room }));
+        io.emit("reset", { room: room });
     });
     socket.on("delete", (data) => {
         const room = data.room;
