@@ -11,7 +11,7 @@ router.get("/", (req: Request, res: Response) => {
     }
 });
 
-router.get("/callback", async (req: Request, res: Response) => {
+router.get("/callback/discord", async (req: Request, res: Response) => {
     const clientSecret = process.env.dcClientSecret || "im missing";
     const clientId = process.env.dcClientId || "im missing";
     const dcLink = process.env.dcRedirectUri || "/error/Discord login link not found. Please try again"
