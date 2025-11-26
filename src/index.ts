@@ -71,6 +71,10 @@ app.get("/error/:error", (req: Request, res: Response) => {
     res.render("error", { error: error });
 });
 
+app.get("/privacy", (req: Request, res: Response) => {
+    res.sendFile(rootdir + "/assets/legal/privacy policy.pdf");
+});
+
 //404 page
 app.use((req: Request, res: Response) => {
     res.status(404).render("404");
@@ -79,7 +83,7 @@ app.use((req: Request, res: Response) => {
 
 // websocket stuff
 io.on("connection", async (socket) => {
-    
+
     socket.emit("clicks", await getClicks());
     socket.on("click", async () => {
         await addClick();
