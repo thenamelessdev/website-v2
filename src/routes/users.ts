@@ -2,19 +2,19 @@ import express, { Request, Response, Router } from "express";
 const router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
-    const dcLik = process.env.dcLink || "/error/Discord login link not found. Please try again"
+    const dcLink = process.env.dcLink || "/error/Discord login link not found. Please try again"
     if(req.session.username){
         res.redirect("/users/dashboard");
     }
     else{
-        res.redirect(dcLik);
+        res.redirect(dcLink);
     }
 });
 
-router.get("/callback", async (req: Request, res: Response) => {
-    const clientSecret = process.env.clientSecret || "im missing";
-    const clientId = process.env.clientId || "im missing";
-    const dcLink = process.env.redirectUri || "/error/Discord login link not found. Please try again"
+router.get("/callback/discord", async (req: Request, res: Response) => {
+    const clientSecret = process.env.dcClientSecret || "im missing";
+    const clientId = process.env.dcClientId || "im missing";
+    const dcLink = process.env.dcRedirectUri || "/error/Discord login link not found. Please try again"
     const code = req.query.code as string;
     
     const exchangeCode = await fetch("https://discord.com/api/oauth2/token", {
