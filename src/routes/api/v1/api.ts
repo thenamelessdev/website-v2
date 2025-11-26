@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { addKey, verifyKey, deleteKey } from "../../../functions.js";
+import { addKey, verifyKey, deleteKey, getClicks } from "../../../functions.js";
 const router = express.Router();
 
 router.put("/keys", async (req:Request, res:Response) => {
@@ -47,8 +47,10 @@ router.delete("/keys", async (req: Request, res: Response) => {
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
-    if (auth){
-        if (await verifyKey(auth.toString())){
+    const apiKey = auth || "im missing";
+    const demo = process.env.demo || "false";
+    if (auth || demo == "true"){
+        if (await verifyKey(apiKey.toString()) || demo == "true"){
             next();
         }
     }
@@ -61,6 +63,13 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/verify", async (req:Request, res: Response) => {
     res.sendStatus(204);
+});
+
+router.get("/clicks", async (req: Request, res: Response) => {
+    const clicks = await getClicks();
+    res.json({
+        clicks: clicks
+    });
 });
 
 router.use((req: Request, res: Response) => {
