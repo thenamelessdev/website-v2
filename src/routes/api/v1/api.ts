@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { addKey, verifyKey, deleteKey, getClicks } from "../../../functions.js";
+import { rooms } from "../../ttt.js";
 const router = express.Router();
 
 router.put("/keys", async (req:Request, res:Response) => {
@@ -70,6 +71,33 @@ router.get("/clicks", async (req: Request, res: Response) => {
     res.json({
         clicks: clicks
     });
+});
+
+router.get("/rooms", (req: Request, res: Response) => {
+    const { room } = req.query;
+
+    if(room){
+        if(rooms[room.toString()]){
+            const requestedRoom = rooms[room.toString()];
+            res.json({
+                room: {
+                    name: requestedRoom.name,
+                    host: requestedRoom.host,
+                    player: requestedRoom.player || "no player joined"
+                }
+            });
+        }
+        else{
+            res.status(404).json({
+                error: "room not found"
+            });
+        }
+    }
+    else{
+        res.status(400).json({
+            "error": "missing room name"
+        });
+    }
 });
 
 router.use((req: Request, res: Response) => {
