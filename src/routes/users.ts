@@ -1,13 +1,15 @@
 import express, { Request, Response, Router } from "express";
+import { json } from "stream/consumers";
 const router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
     const dcLink = process.env.dcLink || "/error/Discord login link not found. Please try again"
+    const ghLink = process.env.githubLink || "/error/GitHub login link not found. Please try again";
     if(req.session.username){
         res.redirect("/users/dashboard");
     }
     else{
-        res.redirect(dcLink);
+        res.render("users/login", { dc: dcLink, gh: ghLink });
     }
 });
 
@@ -56,6 +58,49 @@ router.get("/callback/discord", async (req: Request, res: Response) => {
         console.log(exchangeCodeJson);
     }
 });
+
+router.get("/callback/github", async (req: Request, res: Response) => {
+    const code = req.query.code as string;
+    const clientSecret =  process.env.githubClientSecret || "im missing";
+    const clientId = process.env.githubClientId || "im missing";
+
+    const exchangeCode = await fetch("https://github.com/login/oauth/access_token", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            client_id: clientId,
+            client_secret: clientSecret,
+            code: code
+        })
+    });
+    const exchangeCodeJson = await exchangeCode.json();
+    if(exchangeCode.ok){
+        const token = exchangeCodeJson.access_token;
+        
+        const getUsername = await fetch("https://api.github.com/user", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const getUsernameJson = await getUsername.json();
+
+        if (exchangeCode.ok){
+            const username = getUsernameJson.login;
+            req.session.username = username;
+            res.redirect("/users/dashboard");
+        }
+        else{
+            res.render("error", { error: "There was an error while getting your username." })
+        }
+    }
+    else{
+        res.render("error", { error: "There was an error while exchanging the access token" });
+    }
+});
+
 
 router.get("/logout", (req: Request, res: Response) => {
     req.session.username = undefined;
