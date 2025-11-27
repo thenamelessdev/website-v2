@@ -7,7 +7,7 @@ router.get("/", (req: Request, res: Response) => {
         res.redirect("/users/dashboard");
     }
     else{
-        res.redirect(dcLink);
+        res.render("users/login", { dc: dcLink });
     }
 });
 
