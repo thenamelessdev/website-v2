@@ -15,9 +15,11 @@ export async function verify(request: any) {
         return true;
     }
     else if(!result.success){
+        console.log(result);
         return false;
     }
     else{
+        console.log(result);
         return false;
     }
 }
