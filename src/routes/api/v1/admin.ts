@@ -3,7 +3,7 @@ import { updateAnnouncement } from "../../../functions.js";
 const router = express.Router();
 
 router.use((req: Request, res: Response, next: NextFunction) => {
-    if(req.session.adminUname == process.env.adminUname || process.env.demo == "true"){
+    if(req.session.adminUname || process.env.demo == "true"){
         next();
     }
     else{
