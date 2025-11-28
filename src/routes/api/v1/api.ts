@@ -1,7 +1,10 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { addKey, verifyKey, deleteKey, getClicks } from "../../../functions.js";
+import { addKey, verifyKey, deleteKey, getClicks, getModAnnounce } from "../../../functions.js";
 import { rooms } from "../../ttt.js";
 const router = express.Router();
+
+import adminRouter from "./admin.js";
+router.use("/admin", adminRouter);
 
 router.put("/keys", async (req:Request, res:Response) => {
     const username = req.session.username;
@@ -45,6 +48,15 @@ router.delete("/keys", async (req: Request, res: Response) => {
         res.sendStatus(401);
     }
 });
+
+router.get("/announcement", async (req: Request, res: Response) => {
+    const announcement = await getModAnnounce();
+
+    res.json({
+        announcement: announcement
+    });
+});
+
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;

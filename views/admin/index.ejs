@@ -6,6 +6,11 @@
     <title>Admin login</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
+></script>
 </head>
 <body>
     <h1>Admin login</h1>
@@ -19,6 +24,8 @@
 
         <label for="password">Password: </label>
         <input type="password" id="password" name="password" required>
+        <br>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
         <br>
         <input type="submit" value="Log in">
     </form>

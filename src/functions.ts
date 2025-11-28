@@ -124,3 +124,36 @@ export async function getClicks() {
         return json.clicks;
     }
 }
+
+export async function getModAnnounce() {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if(json.announcement){
+        return json.announcement;
+    }
+    else{
+        json.announcement = "";
+        await writeFileSync(db, JSON.stringify(json));
+        return json.announcement;
+    }
+}
+
+export async function updateAnnouncement(announcement:string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    json.announcement = announcement;
+    await writeFileSync(db, JSON.stringify(json));
+    return true;
+}

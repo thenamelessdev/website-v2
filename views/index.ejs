@@ -16,9 +16,24 @@
     <a href="/users"><button>Log in</button></a>
     <hr>
     <p>This is the 2th version of the website!</p>
+    <p id="announcement"></p>
     <br>
     <p>&copy; 2025 thenamelessdev. Licensed under the <a href="https://opensource.org/license/mit">MIT license.</a></p>
     <p>By using the website you aggree to our <a href="/privacy">privacy policy</a></p>
     <script src="https://thenamelessdev.statuspage.io/embed/script.js"></script>
+    <script>
+        const announcementText = document.getElementById("announcement");
+        async function updateAnnouncement() {
+            const announcement = await fetch("/api/v1/announcement");
+            const announcementJson = await announcement.json();
+            if(announcementJson.announcement == "" || announcementJson.announcement == undefined){
+                
+            }
+            else{
+                announcementText.textContent = `Announcement: ${announcementJson.announcement}`
+            }
+        }
+        updateAnnouncement();
+    </script>
 </body>
 </html>
