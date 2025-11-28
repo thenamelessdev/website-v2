@@ -1,1 +1,1 @@
-Added last login to admin page
+Added this text to homepage

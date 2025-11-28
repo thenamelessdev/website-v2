@@ -18,12 +18,16 @@
     <p>This is the 2th version of the website!</p>
     <p id="announcement"></p>
     <br>
+    <p id="changelog">Dev Changelog: loading...</p>
+    <br>
     <p>&copy; 2025 thenamelessdev. Licensed under the <a href="https://opensource.org/license/mit">MIT license.</a></p>
     <p>By using the website you aggree to our <a href="/privacy">privacy policy</a></p>
     <script src="https://thenamelessdev.statuspage.io/embed/script.js"></script>
     <script>
         const announcementText = document.getElementById("announcement");
-        async function updateAnnouncement() {
+        const changelogText = document.getElementById("changelog");
+
+        async function updateThings() {
             const announcement = await fetch("/api/v1/announcement");
             const announcementJson = await announcement.json();
             if(announcementJson.announcement == "" || announcementJson.announcement == undefined){
@@ -32,8 +36,17 @@
             else{
                 announcementText.textContent = `Announcement: ${announcementJson.announcement}`
             }
+
+            const changelogReq = await fetch("https://raw.githubusercontent.com/thenamelessdev/website-v2/refs/heads/dev/changelog.txt", {
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+            const changelog = await changelogReq.text();
+            changelogText.textContent = `Dev Changelog: ${changelog}`;
+            
         }
-        updateAnnouncement();
+        updateThings();
     </script>
 </body>
 </html>
