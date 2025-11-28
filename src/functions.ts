@@ -182,3 +182,20 @@ export async function verifyAdmin(username: string, password: string) {
         return false;
     }
 }
+
+export async function getLastLogin(username:string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if (json.admins[username]){
+        return json.admins[username].last;
+    }
+    else{
+        return false;
+    }
+}

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { verify, verifyAdmin } from "../functions.js";
+import { verify, verifyAdmin, getLastLogin } from "../functions.js";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
     if (req.session.adminUname){
-        res.render("admin/panel", { name: req.session.adminUname });
+        res.render("admin/panel", { name: req.session.adminUname, last: await getLastLogin(req.session.adminUname) });
     }
     else{
         res.render("admin/index");
