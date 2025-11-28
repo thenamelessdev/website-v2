@@ -16,7 +16,7 @@ router.post("/", async (req: Request, res: Response) => {
 
     if(username == process.env.adminUname && password == process.env.adminPassw){
         req.session.adminUname = username;
-        res.redirect("/admin/panel");
+        res.redirect("/admin");
     }
     else {
         res.render("error", { error: "Wrong admin username or password" });
