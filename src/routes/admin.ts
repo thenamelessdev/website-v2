@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
+import { verify } from "../functions.js";
 const router = express.Router();
-const demo = process.env.demo || "false"
 
 router.get("/", (req: Request, res: Response) => {
     if (req.session.adminUname && req.session.adminUname == process.env.adminUname){
@@ -13,13 +13,17 @@ router.get("/", (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
     const { username, password, } = req.body;
-
-    if(username == process.env.adminUname && password == process.env.adminPassw){
-        req.session.adminUname = username;
-        res.redirect("/admin");
+    if (await verify(req)){
+        if(username == process.env.adminUname && password == process.env.adminPassw){
+            req.session.adminUname = username;
+            res.redirect("/admin");
+        }
+        else {
+            res.render("error", { error: "Wrong admin username or password" });
+        }
     }
-    else {
-        res.render("error", { error: "Wrong admin username or password" });
+    else{
+        res.render("error", { error: "Cloudflare turnstile failed" })
     }
 });
 
