@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
     if (req.session.adminUname){
-        res.render("admin/panel");
+        res.render("admin/panel", { name: req.session.adminUname });
     }
     else{
         res.render("admin/index");
