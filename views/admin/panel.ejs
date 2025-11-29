@@ -8,10 +8,13 @@
     <link rel="shortcut icon" href="/logo" type="image/png">
 </head>
 <body>
-    <h1>Hello admin</h1>
+    <h1>Hello <%= name %></h1>
     <a href="/"><button>Homepage</button></a>
     <a href="/admin/logout"><button>Log out</button></a>
     <hr>
+    <br>
+    <p>Last login: <%= last %></p>
+    <br>
     <h3>Update admin announcement</h3>
     <input type="text" id="announcement" placeholder="Announcement">
     <button id="announcementSubmit">Update</button>

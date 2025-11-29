@@ -157,3 +157,45 @@ export async function updateAnnouncement(announcement:string) {
     await writeFileSync(db, JSON.stringify(json));
     return true;
 }
+
+export async function verifyAdmin(username: string, password: string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if(json.admins[username]){
+        if(json.admins[username].password == password){
+            const now = new Date();
+            json.admins[username].last = now.toLocaleString();
+            await writeFileSync(db, JSON.stringify(json));
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+}
+
+export async function getLastLogin(username:string) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if (json.admins[username]){
+        return json.admins[username].last;
+    }
+    else{
+        return false;
+    }
+}

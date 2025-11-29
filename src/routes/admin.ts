@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { verify } from "../functions.js";
+import { verify, verifyAdmin, getLastLogin } from "../functions.js";
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-    if (req.session.adminUname && req.session.adminUname == process.env.adminUname){
-        res.render("admin/panel");
+router.get("/", async (req: Request, res: Response) => {
+    if (req.session.adminUname){
+        res.render("admin/panel", { name: req.session.adminUname, last: await getLastLogin(req.session.adminUname) });
     }
     else{
         res.render("admin/index");
@@ -14,7 +14,7 @@ router.get("/", (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
     const { username, password, } = req.body;
     if (await verify(req)){
-        if(username == process.env.adminUname && password == process.env.adminPassw){
+        if(await verifyAdmin(username, password)){
             req.session.adminUname = username;
             res.redirect("/admin");
         }
