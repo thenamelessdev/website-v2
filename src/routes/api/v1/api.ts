@@ -60,18 +60,25 @@ router.get("/announcement", async (req: Request, res: Response) => {
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
-    const apiKey = auth || "im missing";
     const demo = process.env.demo || "false";
-    if (auth || demo == "true"){
-        if (await verifyKey(apiKey.toString()) || demo == "true"){
-            next();
-        }
+
+    if (demo == "true"){
+        next();
     }
-    else{
+
+    if (!auth){
         res.status(401).json({
-            "error": "missing auth header"
+            error: "missing auth header"
         });
     }
+
+    if (await verifyKey(auth?.toString() ?? "")){
+        next();
+    }
+
+    res.status(401).json({
+        error: "invalid API key"
+    });
 });
 
 router.get("/verify", async (req:Request, res: Response) => {
