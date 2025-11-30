@@ -56,6 +56,17 @@ app.use("/api/v1", apiRouter);
 app.get("/", (req: Request, res: Response) => {
     res.render("index");
 });
+app.get("/meow", (req: Request, res: Response) => {
+    res.json({
+        head: {
+            title: "Thenamelessdev.com",
+            description: "The page for the meow protocol of thenamelessdev.com"
+        },
+        body: {
+            content: "Meow"
+        }
+    });
+});
 app.get("/who", (req: Request, res: Response) => {
     res.render("who");
 });
