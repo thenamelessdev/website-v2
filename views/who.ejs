@@ -6,17 +6,21 @@
     <title>Who am I</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
 </head>
-<body>
+<body class="text-center">
     <h2>Who am I?</h2>
-    <a href="/"><button>Homepage</button></a>
+    <a href="/"><button type="button" class="btn btn-secondary">Homepage</button></a>
     <hr>
-    <p>Hey I'm nameless, a learning full stack dev! Check out my <a href="https://github.com/thenamelessdev/">GitHub</a>.</p>
-    <details>
-        <summary>Contact me</summary>
-        Discord: thenamelessdev
-        <br>
-        GitHub: <a href="https://github.com/thenamelessdev/">thenamelessdev</a>
-    </details>
+
+    <div class="card align-items-center">
+        <img src="/logo" alt="website logo" width="100">
+        <div class="card-body">
+            <h5 class="card-title">Nameless</h5>
+            <p class="card-text">Hey, I'm Nameless. I am a learning full stack developer</p>
+            <a href="https://github.com/thenamelessdev"><button type="button" class="btn btn-primary">Github</button></a>
+        </div>
+    </div>
 </body>
 </html>
