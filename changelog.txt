@@ -1,1 +1,1 @@
-Backend updated for api key verification
+Frontend updates
