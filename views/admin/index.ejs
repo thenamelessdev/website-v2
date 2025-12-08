@@ -21,19 +21,21 @@
 
     <div class="d-flex justify-content-center mt-4">
     <form action="/admin" method="post">
-        <div class="input-group mb-3 w-75">
-            <span class="input-group-text">Username</span>
-            <input type="text" class="form-control" name="username" required>
+
+        <div class="form-floating">
+            <input type="text" id="username" name="username" class="form-control" required>
+            <label for="username">Username</label>
+        </div>
+        <br>
+        <div class="form-floating">
+            <input type="password" id="password" name="password" class="form-control" required>
+            <label for="password">Password</label>
         </div>
 
-
-        <div class="input-group justify-content-center mb-3 w-75">
-            <span class="input-group-text">Password</span>
-            <input type="password" class="form-control" name="password" required>
-        </div>
-        <input type="submit" value="Log in" class="btn btn-primary">
         <br>
         <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+        <br>
+        <input type="submit" value="Log in" class="btn btn-primary">
     </form>
     </div>
 </body>
