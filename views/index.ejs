@@ -18,16 +18,25 @@
     <a href="/users"><button type="button" class="btn btn-secondary">Log in</button></a>
     <hr>
     <p>This is the 2th version of the website!</p>
-    <p id="announcement"></p>
-    <br>
-    <p id="changelog">Dev Changelog: loading...</p>
+
+    <div class="d-flex justify-content-center mt-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Website Info
+            </div>
+            <ul id="announcementContainer" class="list-group list-group-flush">
+                <li class="list-group-item"><p id="changelog">Dev Changelog: loading...</p></li>
+            </ul>
+        </div>
+    </div>
+    
     <br>
     <p>&copy; 2025 thenamelessdev. Licensed under the <a href="https://opensource.org/license/mit">MIT license.</a></p>
     <p>By using the website you aggree to our <a href="/privacy">privacy policy</a></p>
     <script src="https://thenamelessdev.statuspage.io/embed/script.js"></script>
     <script>
-        const announcementText = document.getElementById("announcement");
         const changelogText = document.getElementById("changelog");
+        const announcementContainer = document.getElementById("announcementContainer");
 
         async function updateThings() {
             const announcement = await fetch("/api/v1/announcement");
@@ -36,7 +45,10 @@
                 
             }
             else{
-                announcementText.textContent = `Announcement: ${announcementJson.announcement}`
+                const announcementLi = document.createElement("li");
+                announcementLi.className = "list-group-item";
+                announcementLi.innerText = `Announcement: ${announcementJson.announcement}`;
+                announcementContainer.appendChild(announcementLi);
             }
 
             const changelogReq = await fetch("https://raw.githubusercontent.com/thenamelessdev/website-v2/refs/heads/dev/changelog.txt", {
