@@ -6,16 +6,21 @@
     <title>Age guesser</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
 </head>
-<body>
+<body class="text-center">
     <h2>Age guesser</h2>
-    <a href="/projects"><button>Go back</button></a>
+    <a href="/projects"><button type="button" class="btn btn-secondary">Go back</button></a>
     <hr>
-    <label for="age">Enter your age: </label>
-    <input type="number" id="age">
-    <br>
-    <button id="submit">Guess age</button>
-    <p id="result"></p>
+
+    <div class="d-flex flex-column align-items-center">
+        <label for="age" class="form-label">Enter your age: </label>
+        <input type="number" id="age" class="form-control w-25" placeholder="Age">
+        <br>
+        <button id="submit" type="button" class="btn btn-success">Guess age</button>
+        <p id="result"></p>
+    </div>
 
     <script>
         const age = document.getElementById("age");

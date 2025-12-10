@@ -6,16 +6,18 @@
     <title>Cursed Calculator</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
 </head>
-<body>
+<body class="text-center">
     <h3>Welcome to the Cursed Calculator</h3>
     <p>gl using it</p>
-    <a href="/projects"><button>Go back</button></a>
+    <a href="/projects"><button type="button" class="btn btn-secondary">Go back</button></a>
     <hr>
-    <label for="inp1">1th number</label>
+    <label for="inp1" class="form-label">1th number: </label>
     <input type="number" id="inp1">
     <br>
-    <label for="inp2">2th number</label>
+    <label for="inp2" class="form-label">2th number</label>
     <input type="number" id="inp2">
     <br>
     
@@ -31,7 +33,7 @@
 
     <p>idk how to divide</p>
 
-    <button id="submit">Calculate</button>
+    <button id="submit" type="button" class="btn btn-success">Calculate</button>
     <br>
     <p id="result"></p>
 
