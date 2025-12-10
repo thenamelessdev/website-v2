@@ -1,1 +1,1 @@
-Style updated for all projects
+Added button group for homepage buttons
