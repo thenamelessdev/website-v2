@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { verify, verifyAdmin, getLastLogin } from "../functions.js";
 const router = express.Router();
 
@@ -27,9 +27,22 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
+router.use((req: Request, res: Response, next: NextFunction) => {
+    if(req.session.adminUname){
+        next();
+    }
+    else{
+        res.render("error", { error: "Admin login required" });
+    }
+});
+
 router.get("/logout", (req: Request, res: Response) => {
     req.session.adminUname = undefined;
     res.redirect("/");
+});
+
+router.get("/info", (req: Request, res: Response) => {
+    res.render("admin/info");
 });
 
 export default router;
