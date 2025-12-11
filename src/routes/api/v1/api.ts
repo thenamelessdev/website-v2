@@ -62,21 +62,21 @@ router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
     const demo = process.env.demo || "false";
 
-    if (demo == "true"){
-        next();
+    if (demo == "true" || req.session.adminUname || req.session.username){
+        return next();
     }
 
     if (!auth){
-        res.status(401).json({
+        return res.status(401).json({
             error: "missing auth header"
         });
     }
 
     if (await verifyKey(auth?.toString() ?? "")){
-        next();
+        return next();
     }
 
-    res.status(401).json({
+    return res.status(401).json({
         error: "invalid API key"
     });
 });

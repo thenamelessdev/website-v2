@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+</head>
+<body class="text-center">
+    <h1>Website info</h1>
+    <a href="/admin"><button type="button" class="btn btn-secondary">Go back</button></a>
+    <hr>
+    <h5 id="clicks">Clicks: loading...</h5>
+
+    <br>
+
+    <h5>Get room info</h5>
+    <br>
+    <label for="room" class="form-label">Room name</label>
+    <div class="d-flex justify-content-center mt-1">
+        <input type="text" class="form-controll" id="room">
+    </div>
+    <br>
+    <button class="btn btn-success" id="roomBtn">Get room</button>
+    <p id="roomRes"></p>
+
+    <script>
+        const clicks = document.getElementById("clicks");
+        const room = document.getElementById("room");
+        const roomBtn = document.getElementById("roomBtn");
+        const roomResponse = document.getElementById("roomRes");
+
+        async function updateStuff(){
+            const clicksRes = await fetch("/api/v1/clicks");
+            const clicksJson = await clicksRes.json();
+
+            if(clicksRes.ok)(
+                clicks.textContent = `Clicks: ${clicksJson.clicks}`
+            )
+            else{
+                clicks.textContent = "Clicks: there was an error while fetching the clicks."
+            }
+        }
+        updateStuff();
+
+        roomBtn.addEventListener("click", async () => {
+            if (room.value){
+                const response = await fetch(`/api/v1/rooms?room=${room.value}`);
+                const responseJson = await response.json();
+                
+                if(response.ok){
+                    roomResponse.textContent = JSON.stringify(responseJson);
+                }
+                else if(response.status == 404){
+                    roomResponse.textContent = "Room not found";
+                }
+                else{
+                    roomResponse.textContent = "There was an error while fetching the room info";
+                }
+            }
+            else{
+                roomResponse.textContent = "Missing room name";
+            }
+        });
+    </script>
+</body>
+</html>
