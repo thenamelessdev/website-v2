@@ -106,6 +106,20 @@ export async function addClick() {
     }
 }
 
+export async function setClicks(clicks:number) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    json.clicks = clicks;
+    await writeFileSync(db, JSON.stringify(json));
+    return true;
+}
+
 export async function getClicks() {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);

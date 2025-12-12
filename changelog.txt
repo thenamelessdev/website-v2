@@ -1,1 +1,1 @@
-Logged in users can use api without auth and added website info to admin page
+Added update clicks to admin page
