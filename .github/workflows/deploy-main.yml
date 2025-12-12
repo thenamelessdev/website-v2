@@ -1,18 +1,22 @@
 name: Deploy-main
 
 on:
-    push:
-        branches: ["main"]
-    workflow_dispatch:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: appleboy/ssh-action@master
-              with:
-                host: ${{ secrets.SERVER_HOST }}
-                username: ${{ secrets.SERVER_USERNAME }}
-                password: ${{ secrets.SERVER_PASSW }}
-                script: |
-                    bash ~/update-main.sh
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSW }}
+          script: |
+            if [[ "${{ github.event.head_commit.message }}" == *"--nobuild"* ]]; then
+              echo "Detected --nobuild in commit message"
+            else
+              bash ~/update-main.sh
+            fi
