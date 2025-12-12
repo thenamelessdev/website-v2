@@ -1,5 +1,5 @@
 import express, { Request, Response, Router, NextFunction } from "express";
-import { updateAnnouncement } from "../../../functions.js";
+import { setClicks, updateAnnouncement } from "../../../functions.js";
 const router = express.Router();
 
 router.use((req: Request, res: Response, next: NextFunction) => {
@@ -18,6 +18,18 @@ router.patch("/announcement", async (req: Request, res: Response) => {
 
     await updateAnnouncement(announcement);
     res.sendStatus(204);
+});
+
+router.patch("/clicks", (req: Request, res: Response) => {
+    const { clicks } = req.body;
+
+    if(clicks || Number(clicks)){
+        setClicks(clicks);
+        res.sendStatus(204);
+    }
+    else{
+        res.sendStatus(400);
+    }
 });
 
 router.use((req: Request, res: Response) => {

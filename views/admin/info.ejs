@@ -25,11 +25,27 @@
     <button class="btn btn-success" id="roomBtn">Get room</button>
     <p id="roomRes"></p>
 
+    <br>
+
+    <h5>Update clicks</h5>
+    <label for="clicks"></label>
+    <br>
+    <div class="d-flex justify-content-center mt-1">
+        <input type="number" id="clicksInp">
+    </div>
+    <br>
+    <button class="btn btn-success" id="updateClicks">Update</button>
+    <br>
+    <p id="updClicksRes"></p>
+
     <script>
         const clicks = document.getElementById("clicks");
         const room = document.getElementById("room");
         const roomBtn = document.getElementById("roomBtn");
         const roomResponse = document.getElementById("roomRes");
+        const clicksInp = document.getElementById("clicksInp");
+        const updClicks = document.getElementById("updateClicks");
+        const updateClicksRes = document.getElementById("updClicksRes");
 
         async function updateStuff(){
             const clicksRes = await fetch("/api/v1/clicks");
@@ -61,6 +77,30 @@
             }
             else{
                 roomResponse.textContent = "Missing room name";
+            }
+        });
+
+        updClicks.addEventListener("click", async () => {
+            if(clicksInp.value){
+                const response = await fetch("/api/v1/admin/clicks", {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        clicks: clicksInp.value
+                    })
+                });
+
+                if(response.ok){
+                    updateClicksRes.textContent = "Updated!";
+                }
+                else{
+                    updateClicksRes.textContent = `There was an error while updating`
+                }
+            }
+            else{
+                updateClicksRes.textContent = "Please enter the clicks"
             }
         });
     </script>
