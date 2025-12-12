@@ -1,1 +1,1 @@
-Added update clicks to admin page
+Added ability to update clicks on admin page
