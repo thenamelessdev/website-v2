@@ -12,17 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^5.0.5",
+    "@types/express": "^5.0.6",
     "@types/express-session": "^1.18.2",
-    "@types/node": "^24.10.0",
+    "@types/node": "^25.0.1",
     "@types/socket.io": "^3.0.2",
-    "connect-mongo": "^5.1.0",
+    "connect-mongo": "^6.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "express-session": "^1.18.2",
-    "nodemon": "^3.1.10",
-    "pm2": "^6.0.13",
+    "nodemon": "^3.1.11",
+    "pm2": "^6.0.14",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
