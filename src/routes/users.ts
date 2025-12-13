@@ -125,5 +125,14 @@ router.get("/dashboard/api", (req: Request, res: Response) => {
     }
 });
 
+router.get("/dashboard/webhooker", (req: Request, res: Response) => {
+    if(req.session.username){
+        res.render("users/webhooker");
+    }
+    else{
+        res.redirect("/users");
+    }
+});
+
 
 export default router;

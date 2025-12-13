@@ -11,7 +11,8 @@
 <body class="text-center">
     <h1>Discord Webhooker</h1>
     <h5>A Discord webhook triggerer</h5>
-    <p>We do not store your Discord webhook URLs</p>
+    <p>We do not store or share your Discord webhook URLs</p>
+    <p>Use the version in the <a href="/users">dashboard</a> to remove the made using thenamelessdev.com text</p>
     <a href="/projects"><button type="button" class="btn btn-secondary">Go back</button></a>
     <hr>
 
@@ -51,13 +52,14 @@
             if (webhookInp.value && messageInp.value){
                 deleteAlerts();
                 try{
+                    const msgToSend = `${messageInp.value}\n\n-# Sent using [thenamelessdev.com](<https://thenamelessdev.com/projects/webhook>)`
                     const response = await fetch(webhookInp.value, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            content: messageInp.value
+                            content: msgToSend
                         })
                     });
                     if (response.ok){

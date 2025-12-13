@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhooker</title>
+    <link rel="shortcut icon" href="/logo" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+</head>
+<body class="text-center">
+    <h1>Discord Webhooker</h1>
+    <h5>A Discord webhook triggerer</h5>
+    <p>We do not store or share your Discord webhook URLs</p>
+    <a href="/users/dashboard"><button type="button" class="btn btn-secondary">Go back</button></a>
+    <hr>
+
+    <div class="d-flex flex-column align-items-center mt-4">
+        <div class="w-50 mb-3">
+            <label for="webhook" class="form-label">Webhook URL</label>
+            <input type="text" id="webhook" class="form-control" placeholder="https://discord.com/api/v10/webhooks/.../...">
+        </div>
+
+        <div class="w-50">
+            <label for="text" class="form-label">Text</label>
+            <textarea id="text" class="form-control" rows="15"></textarea>
+        </div>
+    </div>
+    <br>
+    <button id="send" class="btn btn-success">Send</button>
+
+    <br>
+    <div id="alerts" class="d-flex justify-content-center mt-4"></div>
+    <script>
+        const sendBtn = document.getElementById("send");
+        const webhookInp = document.getElementById("webhook");
+        const messageInp = document.getElementById("text");
+        const alertContainer = document.getElementById("alerts");
+
+        function createAlert(alert, type = "warning"){
+            const newAlert = document.createElement("div");
+            newAlert.className = `alert alert-${type}`;
+            newAlert.innerText = alert;
+            alertContainer.appendChild(newAlert);
+        }
+        function deleteAlerts(){
+            alertContainer.innerHTML = "";
+        }
+
+        sendBtn.addEventListener("click", async () => {
+            if (webhookInp.value && messageInp.value){
+                deleteAlerts();
+                try{
+                    const msgToSend = messageInp.value;
+                    const response = await fetch(webhookInp.value, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            content: msgToSend
+                        })
+                    });
+                    if (response.ok){
+                        createAlert("Message sent!", "success");
+                    }
+                    else{
+                        createAlert("There was an error while sending the webhook. Please try again");
+                    }
+                }
+                catch{
+                    createAlert("Please enter a valid webhook URL");
+                }
+            }
+            else{
+                createAlert("Please fill out both input fields");
+            }
+        });
+    </script>
+</body>
+</html>

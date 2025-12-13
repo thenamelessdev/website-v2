@@ -11,9 +11,12 @@
 </head>
 <body class="text-center">
     <h1>Dashboard - <%= username %></h1>
-    <a href="/users/logout"><button type="button" class="btn btn-secondary">Log Out</button></a>
-    <a href="/"><button type="button" class="btn btn-secondary">Homepage</button><a>
-    <a href="/users/dashboard/api"><button type="button" class="btn btn-secondary">API dashboard</button></a>
+    <div class="btn-group">
+    <a href="/users/logout" class="btn btn-secondary">Log out</a>
+    <a href="/" class="btn btn-secondary">Homepage<a>
+    <a href="/users/dashboard/api" class="btn btn-secondary">API  dashboard</a>
+    <a href="/users/dashboard/webhooker" class="btn btn-secondary">Discord Webhooker</a>
+    </div>
     <hr>
     <p>More things coming soon!</p>
 </body>
