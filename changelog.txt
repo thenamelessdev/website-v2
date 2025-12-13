@@ -1,1 +1,1 @@
-Backend updates: authed and unauthed endpoints are not in different files for organozation
+Made discord webhooker for logged in users and added branding to normal one
