@@ -1,1 +1,1 @@
-Added ability to update clicks on admin page
+Backend updates: authed and unauthed endpoints are not in different files for organozation
