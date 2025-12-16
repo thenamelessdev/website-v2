@@ -28,15 +28,47 @@
         </div>
     </div>
     <br>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmbed">Add embed</button>
+
+    <br><br>
+
     <button id="send" class="btn btn-success">Send</button>
 
     <br>
     <div id="alerts" class="d-flex justify-content-center mt-4"></div>
+
+    <div id="embeds"></div>
+
+
+    <div class="modal fade" id="addEmbed" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Add embed</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="embedTitle" class="form-control" placeholder="Embed title">
+
+                    <textarea id="embedText" class="form-control" placeholder="Embed text" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="addEmbedBtn" data-bs-dismiss="modal">Add embed</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         const sendBtn = document.getElementById("send");
         const webhookInp = document.getElementById("webhook");
         const messageInp = document.getElementById("text");
         const alertContainer = document.getElementById("alerts");
+        let embeds = [];
+        const embedContainer = document.getElementById("embeds");
+        const addEmbedBtn = document.getElementById("addEmbedBtn");
+        const embedTitle = document.getElementById("embedTitle");
+        const embedText = document.getElementById("embedText");
 
         function createAlert(alert, type = "warning"){
             const newAlert = document.createElement("div");
@@ -49,7 +81,7 @@
         }
 
         sendBtn.addEventListener("click", async () => {
-            if (webhookInp.value && messageInp.value){
+            if (webhookInp.value){
                 deleteAlerts();
                 try{
                     const msgToSend = `${messageInp.value}\n\n-# Sent using [thenamelessdev.com](<https://thenamelessdev.com/projects/webhook>)`
@@ -59,7 +91,8 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            content: msgToSend
+                            content: msgToSend,
+                            embeds: embeds
                         })
                     });
                     if (response.ok){
@@ -77,6 +110,25 @@
                 createAlert("Please fill out both input fields");
             }
         });
+
+        function updateEmbedList(){
+            embedContainer.innerHTML = "";
+            embeds.forEach(embed => {
+                const embedText = document.createElement("div");
+                embedText.innerHTML = `<br>Embed title: ${embed["title"]}<br>Embed text: ${embed["description"]}<br>`;
+                embedContainer.appendChild(embedText);
+            });
+        }
+        addEmbedBtn.addEventListener("click", () => {
+            const title = embedTitle.value;
+            const text = embedText.value;
+
+            if(title && text){
+                embeds.push({"title": title, "description": text});
+                updateEmbedList();
+            }
+        });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
