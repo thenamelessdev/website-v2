@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" id="embedTitle" class="form-control" placeholder="Embed title">
-
+                    <input type="color" id="embedColor" class="form-control">
                     <textarea id="embedText" class="form-control" placeholder="Embed text" rows="3"></textarea>
                 </div>
                 <div class="modal-footer">
@@ -69,6 +69,8 @@
         const addEmbedBtn = document.getElementById("addEmbedBtn");
         const embedTitle = document.getElementById("embedTitle");
         const embedText = document.getElementById("embedText");
+        const embedColor = document.getElementById("embedColor");
+
 
         function createAlert(alert, type = "warning"){
             const newAlert = document.createElement("div");
@@ -78,6 +80,10 @@
         }
         function deleteAlerts(){
             alertContainer.innerHTML = "";
+        }
+
+        function parseToDiscordColor(colorValue) {
+            return parseInt(colorValue.slice(1), 16);
         }
 
         sendBtn.addEventListener("click", async () => {
@@ -115,17 +121,24 @@
             embedContainer.innerHTML = "";
             embeds.forEach(embed => {
                 const embedText = document.createElement("div");
-                embedText.innerHTML = `<br>Embed title: ${embed["title"]}<br>Embed text: ${embed["description"]}<br>`;
+                embedText.innerHTML = `<br>Embed title: ${embed["title"]}<br>Embed text: ${embed["description"]}<br>Embed color: ${embed["color"] || "no color"}`;
                 embedContainer.appendChild(embedText);
             });
         }
         addEmbedBtn.addEventListener("click", () => {
             const title = embedTitle.value;
             const text = embedText.value;
+            const color = parseToDiscordColor(embedColor.value);
 
             if(title && text){
-                embeds.push({"title": title, "description": text});
-                updateEmbedList();
+                if(color != 0){
+                    embeds.push({"title": title, "description": text, "color": color});
+                    updateEmbedList();
+                }
+                else{
+                    embeds.push({"title": title, "description": text});
+                    updateEmbedList();
+                }
             }
         });
     </script>
