@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import { rooms } from "./routes/ttt.js";
 import { readFileSync, writeFileSync } from "fs";
 import { addClick, getClicks } from "./functions.js";
+import * as discojs from "@thenamelessdev/discojs";
 
 //vars and conf
 dotenv.config();
@@ -30,6 +31,9 @@ app.use(session({
 }));
 export const io = new Server(server);
 const demo = process.env.demo || "false"
+const token = process.env.botToken || "im missing";
+const logChannel = process.env.logChannel || "im missing";
+discojs.config(token, logChannel);
 
 if(demo == "true"){
     console.warn("WARNING: THIS IS DEMO MODE. SECURITY THINGS ARE DISABLED");

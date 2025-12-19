@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { json } from "stream/consumers";
+import * as discojs from "@thenamelessdev/discojs";
 const router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
@@ -18,6 +18,7 @@ router.get("/callback/discord", async (req: Request, res: Response) => {
     const clientId = process.env.dcClientId || "im missing";
     const dcLink = process.env.dcRedirectUri || "/error/Discord login link not found. Please try again"
     const code = req.query.code as string;
+    const logChannel = process.env.logChannel || "im missing";
     
     const exchangeCode = await fetch("https://discord.com/api/oauth2/token", {
         method: "POST",
@@ -45,6 +46,8 @@ router.get("/callback/discord", async (req: Request, res: Response) => {
         const getUnameJson = await getUname.json();
         if(getUname.ok){
             const username = getUnameJson.username;
+            const now = new Date();
+            await discojs.sendMessage(logChannel, undefined, [{title: "New login", description: `Time: ${now.toString()}\nUsername: ${username}\nMethod: Discord`}]);
             req.session.username = username;
             res.redirect("/users/dashboard");
         }
@@ -63,6 +66,7 @@ router.get("/callback/github", async (req: Request, res: Response) => {
     const code = req.query.code as string;
     const clientSecret =  process.env.githubClientSecret || "im missing";
     const clientId = process.env.githubClientId || "im missing";
+    const logChannel = process.env.logChannel || "im missing";
 
     const exchangeCode = await fetch("https://github.com/login/oauth/access_token", {
         method: "POST",
@@ -89,6 +93,8 @@ router.get("/callback/github", async (req: Request, res: Response) => {
 
         if (exchangeCode.ok){
             const username = getUsernameJson.login;
+            const now = new Date();
+            await discojs.sendMessage(logChannel, undefined, [{title: "New login", description: `Time: ${now.toString()}\nUsername: ${username}\nMethod: GitHub`}]);
             req.session.username = username;
             res.redirect("/users/dashboard");
         }
