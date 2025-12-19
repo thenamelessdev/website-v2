@@ -117,4 +117,9 @@ io.on("connection", async (socket) => {
     });
 });
 
+const clicksChannel = process.env.clicksChannel || "im missing";
+setInterval(async () => {
+    await discojs.sendMessage(clicksChannel, undefined, [{title: "Clicks", description: await getClicks()}]);
+}, 60000);
+
 server.listen({port, host: "0.0.0.0"});
