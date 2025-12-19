@@ -117,4 +117,16 @@ io.on("connection", async (socket) => {
     });
 });
 
+let clicksMsg:any;
+const clicksChannel = process.env.clicksChannel || "im missing";
+setInterval(async () => {
+    if(clicksMsg){
+        await discojs.deleteMessage(clicksMsg.id, clicksMsg.channel_id);
+        clicksMsg = await discojs.sendMessage(clicksMsg.channel_id, undefined, [{title: "Clicks", description: await getClicks()}]);
+    }
+    else{
+        clicksMsg = await discojs.sendMessage(clicksMsg.channel_id, undefined, [{title: "Clicks", description: await getClicks()}]);
+    }
+}, 60000);
+
 server.listen({port, host: "0.0.0.0"});
