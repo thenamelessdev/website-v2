@@ -97,12 +97,25 @@ app.use((req: Request, res: Response) => {
 
 
 // websocket stuff
+let notLoggedClicks:number = 0;
+let logClicks:number = 10; // the number of clicks needed to log
+const clicksChannel = process.env.clicksChannel || "im missing";
 io.on("connection", async (socket) => {
 
     socket.emit("clicks", await getClicks());
     socket.on("click", async () => {
         await addClick();
         io.emit("clicks", await getClicks());
+        notLoggedClicks++;
+        if(notLoggedClicks >= logClicks){
+            notLoggedClicks = 0;
+            try{
+                await discojs.sendMessage(clicksChannel, undefined, [{title: "Clicks", description: await getClicks()}]);
+            }
+            catch{
+                console.error(`there was an error while sending the message. Clicks: ${await getClicks()}`);
+            }
+        }
     });
 
 
@@ -116,10 +129,5 @@ io.on("connection", async (socket) => {
         delete rooms[room];
     });
 });
-
-const clicksChannel = process.env.clicksChannel || "im missing";
-setInterval(async () => {
-    await discojs.sendMessage(clicksChannel, undefined, [{title: "Clicks", description: await getClicks()}]);
-}, 60000);
 
 server.listen({port, host: "0.0.0.0"});
