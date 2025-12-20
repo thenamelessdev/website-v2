@@ -1,1 +1,1 @@
-Discord Webhooker updates
+added reset message on error because if the message got deleted then it would give an error
