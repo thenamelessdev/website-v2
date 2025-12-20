@@ -9,7 +9,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { rooms } from "./routes/ttt.js";
 import { readFileSync, writeFileSync } from "fs";
-import { addClick, getClicks } from "./functions.js";
+import { addClick, getClicks, getMessage, setMessage } from "./functions.js";
 import * as discojs from "@thenamelessdev/discojs";
 
 //vars and conf
@@ -99,7 +99,6 @@ app.use((req: Request, res: Response) => {
 // websocket stuff
 let notLoggedClicks:number = 0;
 let logClicks:number = 10; // the number of clicks needed to log
-let clickMessage:any;
 const clicksChannel = process.env.clicksChannel || "im missing";
 io.on("connection", async (socket) => {
 
@@ -111,11 +110,13 @@ io.on("connection", async (socket) => {
         if(notLoggedClicks >= logClicks){
             notLoggedClicks = 0;
             try{
-                if(clickMessage){
-                    await discojs.editMessage(clickMessage.channel_id, clickMessage.id, undefined, [{title: "Clicks", description: await getClicks()}]);
+                if(await getMessage()){
+                    const message = await getMessage();
+                    await discojs.editMessage(message.channel_id, message.id, undefined, [{title: "Clicks", description: await getClicks()}]);
                 }
                 else{
-                    clickMessage = await discojs.sendMessage(clicksChannel, undefined, [{title: "Clicks", description: await getClicks()}]);
+                     const newMessage = await discojs.sendMessage(clicksChannel, undefined, [{title: "Clicks", description: await getClicks()}]);
+                     await setMessage(newMessage);
                 }
             }
             catch{
