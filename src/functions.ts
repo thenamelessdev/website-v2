@@ -213,3 +213,33 @@ export async function getLastLogin(username:string) {
         return false;
     }
 }
+
+export async function setMessage(message:any) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    json.message = message;
+    await writeFileSync(db, JSON.stringify(json));
+}
+
+export async function getMessage() {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const rootdir = join(__dirname, "..");
+    const db = join(rootdir, "db.json");
+
+    const raw = await readFileSync(db);
+    let json = await JSON.parse(raw.toString());
+
+    if(json.message){
+        return json.message
+    }
+    else{
+        return false;
+    }
+}
