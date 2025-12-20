@@ -120,7 +120,7 @@ io.on("connection", async (socket) => {
                 }
             }
             catch{
-                setMessage({});
+                setMessage(undefined);
                 console.error(`there was an error while sending the message. Clicks: ${await getClicks()}`);
             }
         }
