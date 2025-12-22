@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 const router = express.Router()
 import { addKey, deleteKey, getModAnnounce } from "../../../functions.js";
-import { error } from "console";
 
 router.put("/keys", async (req:Request, res:Response) => {
     const username = req.session.username;
@@ -60,10 +59,23 @@ router.post("/request", async (req: Request, res: Response) => {
 
     if(method && url){
         try{
+            let safeHeaders: Record<string, string> = {};
+            if (headers && typeof headers === "object" && !Array.isArray(headers)) {
+                for (const [key, value] of Object.entries(headers)) {
+                    if (
+                        typeof key === "string" &&
+                        typeof value !== "undefined" &&
+                        value !== null
+                    ) {
+                        safeHeaders[key] = String(value);
+                    }
+                }
+            }
+
             const response = await fetch(url, {
                 method: method,
-                headers: headers,
-                body: JSON.stringify(body)
+                headers: safeHeaders,
+                body: method == "GET" ? undefined : JSON.stringify(body)
             });
             const contenttype = await response.headers.get("content-type");
             if(contenttype?.includes("application/json")){
@@ -73,14 +85,15 @@ router.post("/request", async (req: Request, res: Response) => {
                 resBody = await response.text();
             }
             res.json({
-                status: await response.status,
+                status: response.status,
                 body: resBody
             });
         }
-        catch{
+        catch (error){
             res.status(400).json({
                 error: "There was an error while sending the request. Make sure that the url is well formatted"
             });
+            console.error(error);
         }
     }
     else{

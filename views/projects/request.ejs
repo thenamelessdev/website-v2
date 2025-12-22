@@ -26,6 +26,14 @@
     <button type="button" class="btn btn-primary" id="sendBtn">Send</button>
     </div>
     <br>
+    <br>
+
+    <label for="body" class="form-label">JSON body:</label>
+    <div class="d-flex justify-content-center"><input type="text" class="form-control w-50" id="body" value="{}"></div>
+    <br>
+    <label for="headers" class="form-label">JSON headers:</label>
+    <div class="d-flex justify-content-center"><input type="text" class="form-control w-50" id="headers" value="{}"></div>
+
     <div id="result"></div>
 
     <script>
@@ -33,9 +41,15 @@
         const url = document.getElementById("url");
         const sendBtn = document.getElementById("sendBtn");
         const result = document.getElementById("result");
+        const headersInp = document.getElementById("headers");
+        const bodyInp = document.getElementById("body");
+        let body;
+        let headers;
 
         sendBtn.addEventListener("click", async () => {
             if(url.value){
+                headers = JSON.parse(headersInp.value);
+                body = JSON.parse(bodyInp.value);
                 const response = await fetch("/api/v1/request", {
                     method: "POST",
                     headers: {
@@ -43,7 +57,9 @@
                     },
                     body: JSON.stringify({
                         method: method.value,
-                        url: url.value
+                        url: url.value,
+                        headers: headers,
+                        body: body
                     })
                 });
                 result.innerHTML = "";
