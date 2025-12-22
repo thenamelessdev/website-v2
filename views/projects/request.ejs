@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request sender</title>
+    <link rel="shortcut icon" href="/logo" type="image/x-icon">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+</head>
+<body class="text-center">
+    <h1>Request Sender</h1>
+    <br>
+    <p><b>Send REST API requests easier than ever</b></p>
+    <hr>
+
+    <div class="input-group w-50 d-inline-flex">
+    <select name="method" class="form-select" id="method">
+        <option value="GET" selected>GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="PATCH">PATCH</option>
+        <option value="DELETE">DELETE</option>
+    </select>
+    <input type="text" placeholder="URL" class="form-control w-75" id="url" required>
+    <button type="button" class="btn btn-primary" id="sendBtn">Send</button>
+    </div>
+    <br>
+    <div id="result"></div>
+
+    <script>
+        const method = document.getElementById("method");
+        const url = document.getElementById("url");
+        const sendBtn = document.getElementById("sendBtn");
+        const result = document.getElementById("result");
+
+        sendBtn.addEventListener("click", async () => {
+            if(url.value){
+                const response = await fetch("/api/v1/request", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        method: method.value,
+                        url: url.value
+                    })
+                });
+                result.innerHTML = "";
+
+                const json = await response.json();
+                if(response.ok){
+                    result.innerHTML = `Status code: ${json.status}<br><br>Body: <br>${JSON.stringify(json.body)}`;
+                }
+                else{
+                    result.innerText = `There was an error while sending the api request: ${json.error}`;
+                }
+            }
+            else{
+                url.reportValidity();
+            }
+        });
+    </script>
+</body>
+</html>

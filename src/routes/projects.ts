@@ -40,6 +40,9 @@ router.get("/:project", (req: Request, res: Response) => {
     else if(project == "webhook"){
         res.render("projects/dcWebhook");
     }
+    else if(project == "request"){
+        res.render("projects/request");
+    }
     else {
         res.render("404");
     }
