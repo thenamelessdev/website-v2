@@ -53,4 +53,54 @@ router.get("/announcement", async (req: Request, res: Response) => {
     });
 });
 
+router.post("/request", async (req: Request, res: Response) => {
+    const { method, url, body, headers } = req.body;
+    let resBody;
+
+    if(method && url){
+        try{
+            let safeHeaders: Record<string, string> = {};
+            if (headers && typeof headers === "object" && !Array.isArray(headers)) {
+                for (const [key, value] of Object.entries(headers)) {
+                    if (
+                        typeof key === "string" &&
+                        typeof value !== "undefined" &&
+                        value !== null
+                    ) {
+                        safeHeaders[key] = String(value);
+                    }
+                }
+            }
+
+            const response = await fetch(url, {
+                method: method,
+                headers: safeHeaders,
+                body: method == "GET" ? undefined : JSON.stringify(body)
+            });
+            const contenttype = await response.headers.get("content-type");
+            if(contenttype?.includes("application/json")){
+                resBody = await response.json()
+            }
+            else{
+                resBody = await response.text();
+            }
+            res.json({
+                status: response.status,
+                body: resBody
+            });
+        }
+        catch (error){
+            res.status(400).json({
+                error: "There was an error while sending the request. Make sure that the url is well formatted"
+            });
+            console.error(error);
+        }
+    }
+    else{
+        res.status(400).json({
+            error: "method and url are required in body"
+        });
+    }
+});
+
 export default router;
