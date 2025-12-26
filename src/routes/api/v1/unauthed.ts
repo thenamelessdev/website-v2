@@ -86,7 +86,8 @@ router.post("/request", async (req: Request, res: Response) => {
             }
             res.json({
                 status: response.status,
-                body: resBody
+                body: resBody,
+                headers: Object.fromEntries(response.headers.entries())
             });
         }
         catch (error){
