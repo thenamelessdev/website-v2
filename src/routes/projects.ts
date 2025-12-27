@@ -43,6 +43,9 @@ router.get("/:project", (req: Request, res: Response) => {
     else if(project == "request"){
         res.render("projects/request", { url: req.query.url ? req.query.url : "", method: req.query.method ? req.query.method : "GET" }); 
     }
+    else if(project == "base64"){
+        res.render("projects/base64");
+    }
     else {
         res.render("404");
     }
