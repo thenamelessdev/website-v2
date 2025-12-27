@@ -36,6 +36,11 @@
 
     <div id="result"></div>
 
+
+    <br><br>
+    <button id="createUrlBtn" class="btn btn-primary">Create URL</button>
+    <p id="reqUrl"></p>
+
     <script>
         const method = document.getElementById("method");
         const url = document.getElementById("url");
@@ -101,6 +106,10 @@
                 url.reportValidity();
             }
         });
+
+        document.getElementById("createUrlBtn").addEventListener("click", () => {
+            document.getElementById("reqUrl").textContent = `https://thenamelessdev.com/projects/request?url=${url.value}&method=${method.value}`;
+        })
     </script>
 </body>
 </html>
