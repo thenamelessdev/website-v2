@@ -16,13 +16,13 @@
 
     <div class="input-group w-50 d-inline-flex">
     <select name="method" class="form-select" id="method">
-        <option value="GET" selected>GET</option>
-        <option value="POST">POST</option>
-        <option value="PUT">PUT</option>
-        <option value="PATCH">PATCH</option>
-        <option value="DELETE">DELETE</option>
+        <option value="GET" id="GET">GET</option>
+        <option value="POST" id="POST">POST</option>
+        <option value="PUT" id="PUT">PUT</option>
+        <option value="PATCH" id="PATCH">PATCH</option>
+        <option value="DELETE" id="DELETE">DELETE</option>
     </select>
-    <input type="text" placeholder="URL" class="form-control w-75" id="url" required>
+    <input type="text" placeholder="URL" class="form-control w-75" id="url" value="<%= url %>" required>
     <button type="button" class="btn btn-primary" id="sendBtn">Send</button>
     </div>
     <br>
@@ -36,6 +36,11 @@
 
     <div id="result"></div>
 
+
+    <br><br>
+    <button id="createUrlBtn" class="btn btn-primary">Create URL</button>
+    <p id="reqUrl"></p>
+
     <script>
         const method = document.getElementById("method");
         const url = document.getElementById("url");
@@ -45,6 +50,31 @@
         const bodyInp = document.getElementById("body");
         let body;
         let headers;
+        const getSelect = document.getElementById("GET");
+        const postSelect = document.getElementById("POST");
+        const putSelect = document.getElementById("PUT");
+        const patchSelect = document.getElementById("PATCH");
+        const deleteSelect = document.getElementById("DELETE");
+        const defSelect = "<%= method %>".toUpperCase();
+
+        if(defSelect == "GET"){
+            getSelect.selected = true;
+        }
+        else if(defSelect == "POST"){
+            postSelect.selected = true;
+        }
+        else if(defSelect == "PUT"){
+            putSelect.selected = true;
+        }
+        else if(defSelect == "PATCH"){
+            patchSelect.selected = true;
+        }
+        else if(defSelect == "DELETE"){
+            deleteSelect.selected = true;
+        }
+        else{
+            getSelect.selected = true;
+        }
 
         sendBtn.addEventListener("click", async () => {
             if(url.value){
@@ -76,6 +106,10 @@
                 url.reportValidity();
             }
         });
+
+        document.getElementById("createUrlBtn").addEventListener("click", () => {
+            document.getElementById("reqUrl").textContent = `https://thenamelessdev.com/projects/request?url=${url.value}&method=${method.value}`;
+        })
     </script>
 </body>
 </html>
