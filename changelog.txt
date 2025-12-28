@@ -1,1 +1,1 @@
-added new project: crasher
+added new project: crasher, update styles for tik tak toe
