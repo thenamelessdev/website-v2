@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crasher</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+</head>
+<body class="text-center">
+    <h1>Crasher</h1>
+    <p><b>THENAMELESSDEV.COM IS NOT LIABLE FOR ANY DEMAGE. BY USING THIS PROJECT YOU ARE LIABLE FOR ANY DEMAGE</b></p>
+    <a href="/projects"><button class="btn btn-secondary">Go back</button></a>
+    <hr>
+    <button class="btn btn-danger" id="start">Start</button>
+
+    <script>
+        let arr = [];
+
+        document.getElementById("start").addEventListener("click", () => {
+            while (true){
+                console.log("This is the end");
+                arr.push(new Array(1_000_000).fill("x"));
+            }
+        });
+    </script>
+</body>
+</html>
