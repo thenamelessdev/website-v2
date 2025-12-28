@@ -16,16 +16,13 @@
 
     <script>
         let arr = [];
-        let start = false;
 
         document.getElementById("start").addEventListener("click", () => {
-            start = true;
+            while (true){
+                console.log("This is the end");
+                arr.push(new Array(1_000_000).fill("x"));
+            }
         });
-
-        while (start){
-            console.log("This is the end");
-            arr.push(new Array(1_000_000).fill("x"));
-        }
     </script>
 </body>
 </html>
