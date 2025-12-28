@@ -6,33 +6,10 @@
     <title>Game - <%= room %></title>
     <link rel="stylesheet" href="/style.css">
     <link rel="shortcut icon" href="/logo" type="image/png">
-    <style>
-        body{
-            display: flex;
-            flex-direction: column;
-        }
-        .row{
-            display: flex;
-            gap: 10px;
-            margin: 0px;
-        }
-        p{
-            margin: 0px;
-        }
-        .row p{
-            display: block;
-            margin: 1px;
-            padding: 10px;
-            cursor: pointer;
-            user-select: none;
-            border: 2px solid black;
-            border-radius: 10px;
-            font-size: 30px;
-            box-sizing: border-box;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
 </head>
-<body>
+<body class="text-center">
     <h1>Welcome to lobby <%= room %></h1>
     <p>Host: <%= host %></p>
     <p>You: <%= you %></p>
@@ -41,32 +18,26 @@
     <br>
 
     <h3>Game:</h3>
-    <p>E: empty, X: host, O: player</p>
+    <p>-: empty, X: host, O: player</p>
     <br>
 
-    <div class="row">
-        <p id="a1">-</p>
-        <p id="a2">-</p>
-        <p id="a3">-</p>
-    </div>
-
-    <div class="row">
-        <p id="b1">-</p>
-        <p id="b2">-</p>
-        <p id="b3">-</p>
-    </div>
-
-    <div class="row">
-        <p id="c1">-</p>
-        <p id="c2">-</p>
-        <p id="c3">-</p>
-    </div>
+    <button id="a1" class="btn btn-success">-</button>
+    <button id="a2" class="btn btn-success">-</button>
+    <button id="a3" class="btn btn-success">-</button>
+    <br>
+    <button id="b1" class="btn btn-success">-</button>
+    <button id="b2" class="btn btn-success">-</button>
+    <button id="b3" class="btn btn-success">-</button>
+    <br>
+    <button id="c1" class="btn btn-success">-</button>
+    <button id="c2" class="btn btn-success">-</button>
+    <button id="c3" class="btn btn-success">-</button>
     <p id="turn">X's turn</p>
     <br>
     <p>Invite: <a href="https://thenamelessdev.com/projects/ttt/invite/<%= room %>" target="_blank">thenamelessdev.com/projects/ttt/invite/<%= room %></a></p>
     <br>
-    <button id="resetBtn" disabled>Reset</button>
-    <button id="deleteBtn" disabled>Delete</button>
+    <button id="resetBtn" class="btn btn-danger" disabled>Reset</button>
+    <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -103,6 +74,8 @@
             if(data.room == room){
                 cells.forEach(id => {
                     document.getElementById(id).textContent = "-";
+                    document.getElementById(id).className = "btn btn-success";
+                    document.getElementById(id).disabled = false;
                 });
             }
         });
@@ -117,6 +90,8 @@
             const player = data.player;
             if (room == moveRoom){
                 document.getElementById(move).textContent = player;
+                document.getElementById(move).className = "btn btn-danger"
+                document.getElementById(move).disabled = true;
                 turn = data.turn;
                 document.getElementById("turn").textContent = `${turn}'s turn`;
             }
