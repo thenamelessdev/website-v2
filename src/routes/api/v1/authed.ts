@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 const router = express.Router();
 import { getClicks, verifyKey } from "../../../functions.js";
 import { rooms } from "../../ttt.js";
+import { time } from "console";
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
@@ -62,6 +63,58 @@ router.get("/rooms", (req: Request, res: Response) => {
             "error": "missing room name"
         });
     }
+});
+
+router.post("/encode", (req: Request, res: Response) => {
+    let { text, times } = req.body;
+    let counter = 0;
+    
+    if (isNaN(Number(times))) {
+        return res.status(400).json({
+            error: "Times is NaN"
+        });
+    }
+    
+    try{
+        while(counter < times){
+            text = btoa(text);
+            counter++;
+        }
+    }
+    catch{
+        res.sendStatus(500);
+    }
+
+
+    res.status(200).json({
+        output: String(text)
+    });
+});
+
+router.post("/decode", (req: Request, res: Response) => {
+    let { text, times } = req.body;
+    let counter = 0;
+    
+    if (isNaN(Number(times))) {
+        return res.status(400).json({
+            error: "Times is NaN"
+        });
+    }
+    
+    try{
+        while(counter < times){
+            text = atob(text);
+            counter++;
+        }
+    }
+    catch{
+        res.sendStatus(500);
+    }
+
+
+    res.status(200).json({
+        output: String(text)
+    });
 });
 
 export default router;
