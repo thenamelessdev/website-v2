@@ -77,19 +77,30 @@
         }
 
         sendBtn.addEventListener("click", async () => {
-            if(url.value){
-                headers = JSON.parse(headersInp.value);
-                body = JSON.parse(bodyInp.value);
+            if (url.value) {
+                try {
+                    headers = JSON.parse(headersInp.value);
+                } catch (e) {
+                    result.innerText = "Headers must be valid JSON";
+                    return;
+                }
+
+                const rawBody = bodyInp.value;
+                let bodyToSend;
+                try {
+                    bodyToSend = JSON.parse(rawBody);
+                } catch (e) {
+                    bodyToSend = rawBody;
+                }
+
                 const response = await fetch("/api/v1/request", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         method: method.value,
                         url: url.value,
                         headers: headers,
-                        body: body
+                        body: bodyToSend
                     })
                 });
                 result.innerHTML = "";

@@ -57,31 +57,42 @@ router.post("/request", async (req: Request, res: Response) => {
     const { method, url, body, headers } = req.body;
     let resBody;
 
-    if(method && url){
-        try{
+    if (method && url) {
+        try {
             let safeHeaders: Record<string, string> = {};
             if (headers && typeof headers === "object" && !Array.isArray(headers)) {
                 for (const [key, value] of Object.entries(headers)) {
-                    if (
-                        typeof key === "string" &&
-                        typeof value !== "undefined" &&
-                        value !== null
-                    ) {
+                    if (typeof key === "string" && value != null) {
                         safeHeaders[key] = String(value);
                     }
                 }
             }
 
+            const outgoingBody =
+                method === "GET"
+                    ? undefined
+                    : typeof body === "string"
+                        ? body
+                        : body !== undefined
+                            ? JSON.stringify(body)
+                            : undefined;
+
+            const hasContentType = Object.keys(safeHeaders).some(
+                (h) => h.toLowerCase() === "content-type"
+            );
+            if (outgoingBody && !hasContentType && typeof body !== "string") {
+                safeHeaders["Content-Type"] = "application/json";
+            }
+
             const response = await fetch(url, {
                 method: method,
                 headers: safeHeaders,
-                body: method == "GET" ? undefined : JSON.stringify(body)
+                body: outgoingBody
             });
             const contenttype = await response.headers.get("content-type");
-            if(contenttype?.includes("application/json")){
-                resBody = await response.json()
-            }
-            else{
+            if (contenttype?.includes("application/json")) {
+                resBody = await response.json();
+            } else {
                 resBody = await response.text();
             }
             res.json({
@@ -89,15 +100,13 @@ router.post("/request", async (req: Request, res: Response) => {
                 body: resBody,
                 headers: Object.fromEntries(response.headers.entries())
             });
-        }
-        catch (error){
+        } catch (error) {
             res.status(400).json({
                 error: "There was an error while sending the request. Make sure that the url is well formatted"
             });
             console.error(error);
         }
-    }
-    else{
+    } else {
         res.status(400).json({
             error: "method and url are required in body"
         });
