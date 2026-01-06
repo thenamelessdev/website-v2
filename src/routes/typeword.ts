@@ -9,7 +9,7 @@ interface typeWordRoom {
     winner?: string,
 }
 
-let rooms: Record<string, typeWordRoom> = {};
+export let typeWordRooms: Record<string, typeWordRoom> = {};
 
 router.get("/", (req: Request, res: Response) => {
     res.render("projects/typeword/index")
@@ -20,7 +20,16 @@ router.post("/create", async (req: Request, res: Response) => {
 
     if(username && room){
         if(await verify(req)){
-
+            if(typeWordRooms[room]){
+                res.render("error", { error: "Room name already exists" });
+            }
+            else{
+                typeWordRooms[room] = {
+                    name: room,
+                    host: username
+                }
+                res.render("projects/typeword/game", { room: room, user: username, host: username, player: "none" });
+            }
         }
         else{
             res.render("error", { error: "Cloudflare turnstile failed" });
