@@ -136,6 +136,22 @@ io.on("connection", async (socket) => {
         io.emit("delete", ({ room: room }));
         delete rooms[room];
     });
+
+    socket.on("typewordstart", async (data) => {
+        try{
+            const response = await fetch("https://random-word-api.herokuapp.com/word");
+            const json = await response.json();
+            if(response.ok){
+                io.emit("typewordstart", {"room": data.room, "word": json[0]});
+            }
+            else{
+                io.emit("typewordstart", {"room": data.room, "word": "error"});
+            }
+        }
+        catch{
+            io.emit("typewordstart", {"room": data.room, "word": "error"});
+        }
+    });
 });
 
 server.listen({port, host: "0.0.0.0"});

@@ -13,19 +13,58 @@
     <p>Host: <%= host %></p>
     <p>You: <%= user %></p>
     <p id="playerText">Player: <%= player %></p>
-    
+    <hr>
+
+    <p><b>Word:</b></p>
+    <p id="wordText"></p>
+
+
+    <br>
+
+    <div>
+        <button id="startGameBtn" class="btn btn-success" disabled>Start</button>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const you = "<%= user %>";
         const room = "<%= room %>";
-        const socker = io();
+        const host = "<%= host %>";
+        const socket = io();
         const playerText = document.getElementById("playerText");
+        const wordText = document.getElementById("wordText");
+        const startGameBtn = document.getElementById("startGameBtn");
 
-        socker.on("typewordjoin", (data) => {
+        if(you == host){
+            startGameBtn.disabled = false;
+        }
+
+        function startGame(){
+            socket.emit("typewordstart", {"room": room});
+        }
+
+
+        socket.on("typewordjoin", (data) => {
             if(data.room == room){
                 playerText.textContent = `Player: ${data.username}`;
             }
         });
+
+        socket.on("typewordstart", (data) => {
+            if(data.room == room){
+                wordText.textContent = "3";
+                setTimeout(() => {
+                    wordText.textContent = "2";
+                    setTimeout(() => {
+                        wordText.textContent = "1";
+                        setTimeout(() => {
+                            wordText.textContent = data.word
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }
+        });
+
+        startGameBtn.addEventListener("click", () => startGame());
     </script>
 </body>
 </html>
