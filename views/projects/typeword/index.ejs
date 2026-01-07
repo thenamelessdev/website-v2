@@ -40,5 +40,29 @@
             <input type="submit" value="Create Room" class="btn btn-success">
         </form>
     </div>
+
+
+    <div>
+        <h5>Join Room</h5>
+        <form action="/projects/typeword/join" method="post">
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="room" id="room" class="form-control" placeholder="Room name" required>
+                    <label for="room">Room Name</label>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                    <label for="room">Username</label>
+                </div>
+            </div>
+            <br>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+            <br>
+            <input type="submit" value="Join Room" class="btn btn-success">
+        </form>
+    </div>
 </body>
 </html>

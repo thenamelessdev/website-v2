@@ -12,12 +12,20 @@
     <h1><%= room %></h1>
     <p>Host: <%= host %></p>
     <p>You: <%= user %></p>
-    <p>Player: <%= player %></p>
+    <p id="playerText">Player: <%= player %></p>
     
-
+    <script src="/socket.io/socket.io.js"></script>
     <script>
         const you = "<%= user %>";
         const room = "<%= room %>";
+        const socker = io();
+        const playerText = document.getElementById("playerText");
+
+        socker.on("typewordjoin", (data) => {
+            if(data.room == room){
+                playerText.textContent = `Player: ${data.username}`;
+            }
+        });
     </script>
 </body>
 </html>
