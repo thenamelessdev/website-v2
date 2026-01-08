@@ -11,6 +11,7 @@ import { rooms } from "./routes/ttt.js";
 import { readFileSync, writeFileSync } from "fs";
 import { addClick, getClicks, getMessage, setMessage } from "./functions.js";
 import * as discojs from "@thenamelessdev/discojs";
+import { typeWordRooms } from "./routes/typeword.js";
 
 //vars and conf
 dotenv.config();
@@ -151,6 +152,11 @@ io.on("connection", async (socket) => {
         catch{
             io.emit("typewordstart", {"room": data.room, "word": "error"});
         }
+    });
+
+    socket.on("typewordfinish", (data) => {
+        typeWordRooms[data.room].winner = data.player;
+        io.emit("typewordwinner", {"room": data.room, "player": data.player});
     });
 });
 

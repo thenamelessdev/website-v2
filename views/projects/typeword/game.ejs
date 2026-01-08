@@ -17,6 +17,11 @@
 
     <p><b>Word:</b></p>
     <p id="wordText"></p>
+    <div class="d-flex justify-content-center mt-4">
+        <input type="text" class="form-control w-25" id="wordInp">
+    </div>
+    <br>
+    <p id="timeText">Time: 0s</p>
 
 
     <br>
@@ -33,6 +38,10 @@
         const playerText = document.getElementById("playerText");
         const wordText = document.getElementById("wordText");
         const startGameBtn = document.getElementById("startGameBtn");
+        const timeText = document.getElementById("timeText");
+        const wordInp = document.getElementById("wordInp");
+        let word;
+        let time = 0;
 
         if(you == host){
             startGameBtn.disabled = false;
@@ -42,10 +51,34 @@
             socket.emit("typewordstart", {"room": room});
         }
 
+        function checkWord(){
+            if(wordInp.value == word){
+                const finishTime = time;
+                time = undefined;
+                socket.emit("typewordfinish", {"room": room, "time": finishTime, "player": you});
+            }
+        }
+
+        setInterval(() => {
+            if(word){
+                time = time + 0.01;
+                timeText.textContent = `Time: ${time.toFixed(2)}`;
+                checkWord();
+            }
+        }, 10);
+
 
         socket.on("typewordjoin", (data) => {
             if(data.room == room){
                 playerText.textContent = `Player: ${data.username}`;
+            }
+        });
+
+        socket.on("typewordwinner", (data) => {
+            if(data.room = room){
+                word = undefined;
+                time = 0;
+                timeText.textContent = `Winner: ${data.player}`;
             }
         });
 
@@ -57,7 +90,8 @@
                     setTimeout(() => {
                         wordText.textContent = "1";
                         setTimeout(() => {
-                            wordText.textContent = data.word
+                            word = data.word;
+                            wordText.textContent = word;
                         }, 1000);
                     }, 1000);
                 }, 1000);
