@@ -158,6 +158,11 @@ io.on("connection", async (socket) => {
         typeWordRooms[data.room].winner = data.player;
         io.emit("typewordwinner", {"room": data.room, "player": data.player});
     });
+
+    socket.on("typeworddelete", (data) => {
+        delete typeWordRooms[data.room];
+        io.emit("typeworddelete", {"room": data.room});
+    });
 });
 
 server.listen({port, host: "0.0.0.0"});

@@ -26,8 +26,10 @@
 
     <br>
 
-    <div>
+    <p><b>Controls (host only):</b></p>
+    <div class="btn-group">
         <button id="startGameBtn" class="btn btn-success" disabled>Start</button>
+        <button id="deleteRoomBtn" class="btn btn-danger" disabled>Delete Room</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -40,11 +42,13 @@
         const startGameBtn = document.getElementById("startGameBtn");
         const timeText = document.getElementById("timeText");
         const wordInp = document.getElementById("wordInp");
+        const deleteRoomBtn = document.getElementById("deleteRoomBtn");
         let word;
         let time = 0;
 
         if(you == host){
             startGameBtn.disabled = false;
+            deleteRoomBtn.disabled = false;
         }
 
         function startGame(){
@@ -74,6 +78,12 @@
             }
         });
 
+        socket.on("typeworddelete", (data) => {
+            if(data.room == room){
+                location.href = "/error/Host deleted the room";
+            }
+        });
+
         socket.on("typewordwinner", (data) => {
             if(data.room = room){
                 word = undefined;
@@ -96,6 +106,10 @@
                     }, 1000);
                 }, 1000);
             }
+        });
+
+        deleteRoomBtn.addEventListener("click", () => {
+            socket.emit("typeworddelete", {"room": room});
         });
 
         startGameBtn.addEventListener("click", () => startGame());
