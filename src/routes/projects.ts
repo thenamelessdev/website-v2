@@ -4,6 +4,9 @@ const router = express.Router();
 import tttRouter from "./ttt.js";
 router.use("/ttt", tttRouter);
 
+import typeWordRouter from "./typeword.js";
+router.use("/typeword", typeWordRouter);
+
 router.get("/", (req: Request, res: Response) => {
     res.render("projects");
 });

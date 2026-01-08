@@ -11,6 +11,7 @@ import { rooms } from "./routes/ttt.js";
 import { readFileSync, writeFileSync } from "fs";
 import { addClick, getClicks, getMessage, setMessage } from "./functions.js";
 import * as discojs from "@thenamelessdev/discojs";
+import { typeWordRooms } from "./routes/typeword.js";
 
 //vars and conf
 dotenv.config();
@@ -135,6 +136,27 @@ io.on("connection", async (socket) => {
         const room = data.room;
         io.emit("delete", ({ room: room }));
         delete rooms[room];
+    });
+
+    socket.on("typewordstart", async (data) => {
+        try{
+            const response = await fetch("https://random-word-api.herokuapp.com/word");
+            const json = await response.json();
+            if(response.ok){
+                io.emit("typewordstart", {"room": data.room, "word": json[0]});
+            }
+            else{
+                io.emit("typewordstart", {"room": data.room, "word": "error"});
+            }
+        }
+        catch{
+            io.emit("typewordstart", {"room": data.room, "word": "error"});
+        }
+    });
+
+    socket.on("typewordfinish", (data) => {
+        typeWordRooms[data.room].winner = data.player;
+        io.emit("typewordwinner", {"room": data.room, "player": data.player});
     });
 });
 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeWord</title>
+    <link rel="shortcut icon" href="/logo" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+    <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
+></script>
+</head>
+<body class="text-center">
+    <h1>TypeWord</h1>
+    <p><b>A fun game to play with friends</b></p>
+    <p>How to play: after both players join the room the game will give you a world. You have to type the word as fast as you can and whoewer types it faster wins.</p>
+    <hr>
+    <div>
+        <h5>Create Room</h5>
+        <form action="/projects/typeword/create" method="post">
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="room" id="room" class="form-control" placeholder="Room name" required>
+                    <label for="room">Room Name</label>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                    <label for="room">Username</label>
+                </div>
+            </div>
+            <br>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+            <br>
+            <input type="submit" value="Create Room" class="btn btn-success">
+        </form>
+    </div>
+
+    <br>
+
+    <div>
+        <h5>Join Room</h5>
+        <form action="/projects/typeword/join" method="post">
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="room" id="room" class="form-control" placeholder="Room name" required>
+                    <label for="room">Room Name</label>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <div class="form-floating w-25">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                    <label for="room">Username</label>
+                </div>
+            </div>
+            <br>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACAX5hJ5rxxG4bFv"></div>
+            <br>
+            <input type="submit" value="Join Room" class="btn btn-success">
+        </form>
+    </div>
+</body>
+</html>

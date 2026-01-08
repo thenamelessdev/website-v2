@@ -1,1 +1,1 @@
-added new project: crasher, update styles for tik tak toe
+New mayor project: TypeWord. Check it out in the projects tab
