@@ -87,7 +87,7 @@
         });
 
         socket.on("typewordwinner", (data) => {
-            if(data.room = room){
+            if(data.room == room){
                 word = undefined;
                 time = 0;
                 winnerText.textContent = `${data.player} won with ${data.time.toFixed(2)}`;
