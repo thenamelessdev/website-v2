@@ -60,7 +60,8 @@
         function checkWord(){
             if(wordInp.value == word){
                 const finishTime = time;
-                time = undefined;
+                word = undefined;
+                time = 0;
                 socket.emit("typewordfinish", {"room": room, "time": finishTime, "player": you});
             }
         }
