@@ -156,7 +156,7 @@ io.on("connection", async (socket) => {
 
     socket.on("typewordfinish", (data) => {
         typeWordRooms[data.room].winner = data.player;
-        io.emit("typewordwinner", {"room": data.room, "player": data.player});
+        io.emit("typewordwinner", {"room": data.room, "player": data.player, "time": data.time});
     });
 
     socket.on("typeworddelete", (data) => {

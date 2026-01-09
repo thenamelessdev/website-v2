@@ -22,6 +22,7 @@
     </div>
     <br>
     <p id="timeText">Time: 0s</p>
+    <p id="winnerText"></p>
 
 
     <br>
@@ -43,6 +44,7 @@
         const timeText = document.getElementById("timeText");
         const wordInp = document.getElementById("wordInp");
         const deleteRoomBtn = document.getElementById("deleteRoomBtn");
+        const winnerText = document.getElementById("winnerText");
         let word;
         let time = 0;
 
@@ -88,7 +90,7 @@
             if(data.room = room){
                 word = undefined;
                 time = 0;
-                timeText.textContent = `Winner: ${data.player}`;
+                winnerText.textContent = `${data.player} won with ${data.time.toFixed(2)}`;
             }
         });
 
