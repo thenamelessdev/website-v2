@@ -1,1 +1,1 @@
-TypeWord bug fixes
+Make TypeWord room api endpoint

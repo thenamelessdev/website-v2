@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 const router = express.Router();
 import { getClicks, verifyKey } from "../../../functions.js";
 import { rooms } from "../../ttt.js";
-import { time } from "console";
+import { typeWordRooms } from "../../typeword.js";
 
 router.use(async (req: Request, res: Response, next: NextFunction) => {
     const { auth } = req.headers;
@@ -38,7 +38,7 @@ router.get("/clicks", async (req: Request, res: Response) => {
     });
 });
 
-router.get("/rooms", (req: Request, res: Response) => {
+router.get("/ttt/rooms", (req: Request, res: Response) => {
     const { room } = req.query;
 
     if(room){
@@ -115,6 +115,33 @@ router.post("/decode", (req: Request, res: Response) => {
     res.status(200).json({
         output: String(text)
     });
+});
+
+router.get("/typeword/rooms", (req: Request, res: Response) => {
+    const room = req.query.room;
+
+    if(room){
+        if(typeWordRooms[String(room)]){
+            res.json({
+                room: {
+                    name: typeWordRooms[String(room)].name,
+                    host: typeWordRooms[String(room)].host,
+                    player: typeWordRooms[String(room)].player || "no player",
+                    winner: typeWordRooms[String(room)].winner || "no winner yet"
+                }
+            })
+        }
+        else{
+            res.status(404).json({
+                error: "Room not found"
+            })
+        }
+    }
+    else{
+        res.status(400).json({
+            error: "Missing room"
+        })
+    }
 });
 
 export default router;
