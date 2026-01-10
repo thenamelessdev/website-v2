@@ -1,1 +1,1 @@
-New mayor project: TypeWord. Check it out in the projects tab
+Make TypeWord room api endpoint

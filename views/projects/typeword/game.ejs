@@ -16,18 +16,21 @@
     <hr>
 
     <p><b>Word:</b></p>
-    <p id="wordText"></p>
+    <p id="wordText" style="user-select: none;"></p>
     <div class="d-flex justify-content-center mt-4">
         <input type="text" class="form-control w-25" id="wordInp">
     </div>
     <br>
     <p id="timeText">Time: 0s</p>
+    <p id="winnerText"></p>
 
 
     <br>
 
-    <div>
+    <p><b>Controls (host only):</b></p>
+    <div class="btn-group">
         <button id="startGameBtn" class="btn btn-success" disabled>Start</button>
+        <button id="deleteRoomBtn" class="btn btn-danger" disabled>Delete Room</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -40,11 +43,14 @@
         const startGameBtn = document.getElementById("startGameBtn");
         const timeText = document.getElementById("timeText");
         const wordInp = document.getElementById("wordInp");
+        const deleteRoomBtn = document.getElementById("deleteRoomBtn");
+        const winnerText = document.getElementById("winnerText");
         let word;
         let time = 0;
 
         if(you == host){
             startGameBtn.disabled = false;
+            deleteRoomBtn.disabled = false;
         }
 
         function startGame(){
@@ -52,9 +58,10 @@
         }
 
         function checkWord(){
-            if(wordInp.value == word){
+            if(wordInp.value.toLowerCase() == word){
                 const finishTime = time;
-                time = undefined;
+                word = undefined;
+                time = 0;
                 socket.emit("typewordfinish", {"room": room, "time": finishTime, "player": you});
             }
         }
@@ -74,11 +81,17 @@
             }
         });
 
+        socket.on("typeworddelete", (data) => {
+            if(data.room == room){
+                location.href = "/error/Host deleted the room";
+            }
+        });
+
         socket.on("typewordwinner", (data) => {
-            if(data.room = room){
+            if(data.room == room){
                 word = undefined;
                 time = 0;
-                timeText.textContent = `Winner: ${data.player}`;
+                winnerText.textContent = `${data.player} won with ${data.time.toFixed(2)}`;
             }
         });
 
@@ -96,6 +109,10 @@
                     }, 1000);
                 }, 1000);
             }
+        });
+
+        deleteRoomBtn.addEventListener("click", () => {
+            socket.emit("typeworddelete", {"room": room});
         });
 
         startGameBtn.addEventListener("click", () => startGame());
