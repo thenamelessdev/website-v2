@@ -1,1 +1,1 @@
-Make TypeWord room api endpoint
+Adapt to new endpoint for ttt, bux fixes in TypeWord

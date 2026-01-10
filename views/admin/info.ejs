@@ -62,7 +62,7 @@
 
         roomBtn.addEventListener("click", async () => {
             if (room.value){
-                const response = await fetch(`/api/v1/rooms?room=${room.value}`);
+                const response = await fetch(`/api/v1/ttt/rooms?room=${room.value}`);
                 const responseJson = await response.json();
                 
                 if(response.ok){
