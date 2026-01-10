@@ -143,7 +143,7 @@ io.on("connection", async (socket) => {
             const response = await fetch("https://random-word-api.herokuapp.com/word");
             const json = await response.json();
             if(response.ok){
-                io.emit("typewordstart", {"room": data.room, "word": json[0]});
+                io.emit("typewordstart", {"room": data.room, "word": json[0].toLowerCase()});
             }
             else{
                 io.emit("typewordstart", {"room": data.room, "word": "error"});
