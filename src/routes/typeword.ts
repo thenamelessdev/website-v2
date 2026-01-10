@@ -47,9 +47,14 @@ router.post("/join", async (req: Request, res: Response) => {
     if(username && room){
         if(await verify(req)){
             if(typeWordRooms[room]){
-                typeWordRooms[room].player = username;
-                io.emit("typewordjoin", {"room": room, "username": username});
-                res.render("projects/typeword/game", { room: room, user: username, host: typeWordRooms[room].host, player: username });
+                if(username != typeWordRooms[room].host){
+                    typeWordRooms[room].player = username;
+                    io.emit("typewordjoin", {"room": room, "username": username});
+                    res.render("projects/typeword/game", { room: room, user: username, host: typeWordRooms[room].host, player: username });
+                }
+                else{
+                    res.render("error", { error: "Username cannot be the host's username" });
+                }
             }
             else{
                 res.status(404).render("error", { error: "Room doesn't exists" })
